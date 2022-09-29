@@ -1,1 +1,1 @@
-This repo contains tooling for monitoring Avalanche nodes.
+This repo contains tooling for monitoring Camino nodes.

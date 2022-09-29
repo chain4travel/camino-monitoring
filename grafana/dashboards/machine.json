@@ -30,7 +30,7 @@
     {
       "icon": "external link",
       "tags": [
-        "Avalanche"
+        "Camino"
       ],
       "type": "dashboards"
     }
@@ -163,7 +163,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "(1 - avg(irate(node_cpu_seconds_total{job=~\"avalanchego-machine\", mode=\"idle\"}[1m])) by (instance)) * 100",
+          "expr": "(1 - avg(irate(node_cpu_seconds_total{job=~\"caminogo-machine\", mode=\"idle\"}[1m])) by (instance)) * 100",
           "interval": "",
           "legendFormat": "CPU",
           "refId": "A"
@@ -260,7 +260,7 @@
       "datasource": {
         "type": "prometheus"
       },
-      "description": "Include I/O from applications other than AvalancheGo",
+      "description": "Include I/O from applications other than CaminoGo",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -357,7 +357,7 @@
       "datasource": {
         "type": "prometheus"
       },
-      "description": "Includes I/O from applications other than AvalancheGo",
+      "description": "Includes I/O from applications other than CaminoGo",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -577,7 +577,7 @@
             "type": "prometheus"
           },
           "exemplar": true,
-          "expr": "100 * (node_memory_MemTotal_bytes{job=~\"avalanchego-machine\"} - node_memory_MemFree_bytes{job=~\"avalanchego-machine\"} - node_memory_Buffers_bytes{job=~\"avalanchego-machine\"} - node_memory_Cached_bytes{job=~\"avalanchego-machine\"}) / node_memory_MemTotal_bytes{job=~\"avalanchego-machine\"}",
+          "expr": "100 * (node_memory_MemTotal_bytes{job=~\"caminogo-machine\"} - node_memory_MemFree_bytes{job=~\"caminogo-machine\"} - node_memory_Buffers_bytes{job=~\"caminogo-machine\"} - node_memory_Cached_bytes{job=~\"caminogo-machine\"}) / node_memory_MemTotal_bytes{job=~\"caminogo-machine\"}",
           "interval": "",
           "legendFormat": "Memory",
           "refId": "A"
@@ -703,7 +703,7 @@
       "pluginVersion": "8.0.5",
       "targets": [
         {
-          "expr": "max(((node_filesystem_size_bytes{job=~\"avalanchego-machine\", fstype=~\"ext4|vfat\"} - node_filesystem_free_bytes{job=~\"avalanchego-machine\", fstype=~\"ext4|vfat\"}) / node_filesystem_size_bytes{job=~\"avalanchego-machine\", fstype=~\"ext4|vfat\"}) * 100) by (instance)",
+          "expr": "max(((node_filesystem_size_bytes{job=~\"caminogo-machine\", fstype=~\"ext4|vfat\"} - node_filesystem_free_bytes{job=~\"caminogo-machine\", fstype=~\"ext4|vfat\"}) / node_filesystem_size_bytes{job=~\"caminogo-machine\", fstype=~\"ext4|vfat\"}) * 100) by (instance)",
           "interval": "",
           "legendFormat": "Disk",
           "refId": "A"
@@ -791,7 +791,7 @@
             "type": "prometheus"
           },
           "editorMode": "code",
-          "expr": "avalanche_go_goroutines{job=~\"avalanchego\"}",
+          "expr": "camino_go_goroutines{job=~\"validator-node.*\"}",
           "interval": "",
           "legendFormat": "goroutines",
           "range": true,
@@ -880,7 +880,7 @@
             "type": "prometheus"
           },
           "editorMode": "code",
-          "expr": "avalanche_process_open_fds{job=~\"avalanchego\"}",
+          "expr": "camino_process_open_fds{job=~\"validator-node.*\"}",
           "legendFormat": "Open files",
           "range": true,
           "refId": "A"
@@ -891,7 +891,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "avalanche_process_max_fds{job=~\"avalanchego\"}",
+          "expr": "camino_process_max_fds{job=~\"validator-node.*\"}",
           "hide": false,
           "instant": false,
           "legendFormat": "Max number allowed",
@@ -907,7 +907,7 @@
   "schemaVersion": 36,
   "style": "dark",
   "tags": [
-    "Avalanche"
+    "Camino"
   ],
   "templating": {
     "list": []

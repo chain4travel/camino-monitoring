@@ -26,7 +26,7 @@
     {
       "icon": "external link",
       "tags": [
-        "Avalanche"
+        "Camino"
       ],
       "type": "dashboards"
     }
@@ -111,7 +111,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "round(increase(avalanche_C_blks_accepted_count{job=\"avalanchego\"}[1m]))>0",
+          "expr": "round(increase(camino_C_blks_accepted_count{job=~\"validator-node.*\"}[1m]))>0",
           "interval": "",
           "legendFormat": "Accepted",
           "refId": "A"
@@ -201,7 +201,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "round(increase(avalanche_C_blks_rejected_count{job=\"avalanchego\"}[1m]))>0",
+          "expr": "round(increase(camino_C_blks_rejected_count{job=~\"validator-node.*\"}[1m]))>0",
           "interval": "",
           "legendFormat": "Rejected",
           "refId": "A"
@@ -288,7 +288,7 @@
       "pluginVersion": "8.0.4",
       "targets": [
         {
-          "expr": "rate(avalanche_C_blks_accepted_sum{job=\"avalanchego\"}[5m]) / rate(avalanche_C_blks_accepted_count{job=\"avalanchego\"}[5m])",
+          "expr": "rate(camino_C_blks_accepted_sum{job=~\"validator-node.*\"}[5m]) / rate(camino_C_blks_accepted_count{job=~\"validator-node.*\"}[5m])",
           "interval": "",
           "legendFormat": "Avg Acceptance Latency",
           "refId": "A"
@@ -378,7 +378,7 @@
       "pluginVersion": "8.0.4",
       "targets": [
         {
-          "expr": "rate(avalanche_C_blks_rejected_sum{job=\"avalanchego\"}[5m]) / rate(avalanche_C_blks_rejected_count{job=\"avalanchego\"}[5m])",
+          "expr": "rate(camino_C_blks_rejected_sum{job=~\"validator-node.*\"}[5m]) / rate(camino_C_blks_rejected_count{job=~\"validator-node.*\"}[5m])",
           "interval": "",
           "legendFormat": "Avg Rejection Latency",
           "refId": "A"
@@ -463,7 +463,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "avalanche_C_blks_processing{job=\"avalanchego\"}>0",
+          "expr": "camino_C_blks_processing{job=~\"validator-node.*\"}>0",
           "interval": "",
           "legendFormat": "Transactions",
           "refId": "A"
@@ -548,7 +548,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "avalanche_C_polls > 0",
+          "expr": "camino_C_polls > 0",
           "interval": "",
           "legendFormat": "",
           "refId": "A"
@@ -637,91 +637,91 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "rate(avalanche_C_handler_pull_query_sum{job=\"avalanchego\"}[5m])",
+          "expr": "rate(camino_C_handler_pull_query_sum{job=~\"validator-node.*\"}[5m])",
           "interval": "",
           "legendFormat": "pull query",
           "refId": "A"
         },
         {
           "exemplar": true,
-          "expr": "rate(avalanche_C_handler_push_query_sum{job=\"avalanchego\"}[5m])",
+          "expr": "rate(camino_C_handler_push_query_sum{job=~\"validator-node.*\"}[5m])",
           "interval": "",
           "legendFormat": "push query",
           "refId": "B"
         },
         {
           "exemplar": true,
-          "expr": "rate(avalanche_C_handler_chits_sum{job=\"avalanchego\"}[5m])",
+          "expr": "rate(camino_C_handler_chits_sum{job=~\"validator-node.*\"}[5m])",
           "interval": "",
           "legendFormat": "chits",
           "refId": "C"
         },
         {
           "exemplar": true,
-          "expr": "rate(avalanche_C_handler_accepted_sum{job=\"avalanchego\"}[5m])",
+          "expr": "rate(camino_C_handler_accepted_sum{job=~\"validator-node.*\"}[5m])",
           "interval": "",
           "legendFormat": "accepted",
           "refId": "D"
         },
         {
           "exemplar": true,
-          "expr": "rate(avalanche_C_handler_get_sum{job=\"avalanchego\"}[5m])",
+          "expr": "rate(camino_C_handler_get_sum{job=~\"validator-node.*\"}[5m])",
           "interval": "",
           "legendFormat": "get",
           "refId": "E"
         },
         {
           "exemplar": true,
-          "expr": "rate(avalanche_C_handler_put_sum{job=\"avalanchego\"}[5m])",
+          "expr": "rate(camino_C_handler_put_sum{job=~\"validator-node.*\"}[5m])",
           "interval": "",
           "legendFormat": "put",
           "refId": "F"
         },
         {
           "exemplar": true,
-          "expr": "rate(avalanche_C_handler_multiput_sum{job=\"avalanchego\"}[5m])",
+          "expr": "rate(camino_C_handler_multiput_sum{job=~\"validator-node.*\"}[5m])",
           "interval": "",
           "legendFormat": "multiput",
           "refId": "G"
         },
         {
           "exemplar": true,
-          "expr": "rate(avalanche_C_handler_get_ancestors_sum{job=\"avalanchego\"}[5m])",
+          "expr": "rate(camino_C_handler_get_ancestors_sum{job=~\"validator-node.*\"}[5m])",
           "interval": "",
           "legendFormat": "get ancestors",
           "refId": "H"
         },
         {
           "exemplar": true,
-          "expr": "rate(avalanche_C_handler_get_failed_sum{job=\"avalanchego\"}[5m])",
+          "expr": "rate(camino_C_handler_get_failed_sum{job=~\"validator-node.*\"}[5m])",
           "interval": "",
           "legendFormat": "get failed",
           "refId": "I"
         },
         {
           "exemplar": true,
-          "expr": "rate(avalanche_C_handler_query_failed_sum{job=\"avalanchego\"}[5m])",
+          "expr": "rate(camino_C_handler_query_failed_sum{job=~\"validator-node.*\"}[5m])",
           "interval": "",
           "legendFormat": "query failed",
           "refId": "J"
         },
         {
           "exemplar": true,
-          "expr": "rate(avalanche_C_handler_get_accepted_sum{job=\"avalanchego\"}[5m])",
+          "expr": "rate(camino_C_handler_get_accepted_sum{job=~\"validator-node.*\"}[5m])",
           "interval": "",
           "legendFormat": "get accepted",
           "refId": "K"
         },
         {
           "exemplar": true,
-          "expr": "rate(avalanche_C_handler_get_ancestors_failed_sum{job=\"avalanchego\"}[5m])",
+          "expr": "rate(camino_C_handler_get_ancestors_failed_sum{job=~\"validator-node.*\"}[5m])",
           "interval": "",
           "legendFormat": "get ancestors failed",
           "refId": "L"
         },
         {
           "exemplar": true,
-          "expr": "rate(avalanche_C_handler_app_request_sum{job=\"avalanchego\"}[5m])",
+          "expr": "rate(camino_C_handler_app_request_sum{job=~\"validator-node.*\"}[5m])",
           "hide": false,
           "interval": "",
           "legendFormat": "app request",
@@ -729,7 +729,7 @@
         },
         {
           "exemplar": true,
-          "expr": "rate(avalanche_C_handler_app_request_failed_sum{job=\"avalanchego\"}[5m])",
+          "expr": "rate(camino_C_handler_app_request_failed_sum{job=~\"validator-node.*\"}[5m])",
           "hide": false,
           "interval": "",
           "legendFormat": "app request failed",
@@ -737,7 +737,7 @@
         },
         {
           "exemplar": true,
-          "expr": "rate(avalanche_C_handler_app_response_sum{job=\"avalanchego\"}[5m])",
+          "expr": "rate(camino_C_handler_app_response_sum{job=~\"validator-node.*\"}[5m])",
           "hide": false,
           "interval": "",
           "legendFormat": "app response",
@@ -745,7 +745,7 @@
         },
         {
           "exemplar": true,
-          "expr": "rate(avalanche_C_handler_app_gossip_sum{job=\"avalanchego\"}[5m])",
+          "expr": "rate(camino_C_handler_app_gossip_sum{job=~\"validator-node.*\"}[5m])",
           "hide": false,
           "interval": "",
           "legendFormat": "app gossip",
@@ -839,7 +839,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "(increase(avalanche_C_handler_chits_count{job=\"avalanchego\"}[5m]) + 1) / (increase(avalanche_C_handler_chits_count{job=\"avalanchego\"}[5m]) + increase(avalanche_C_handler_query_failed_count{job=\"avalanchego\"}[5m]) + 1)",
+          "expr": "(increase(camino_C_handler_chits_count{job=~\"validator-node.*\"}[5m]) + 1) / (increase(camino_C_handler_chits_count{job=~\"validator-node.*\"}[5m]) + increase(camino_C_handler_query_failed_count{job=~\"validator-node.*\"}[5m]) + 1)",
           "instant": false,
           "interval": "",
           "legendFormat": "% Successful",
@@ -929,91 +929,91 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "rate(avalanche_C_handler_pull_query_sum{job=\"avalanchego\"}[5m])/rate(avalanche_C_handler_pull_query_count{job=\"avalanchego\"}[5m])",
+          "expr": "rate(camino_C_handler_pull_query_sum{job=~\"validator-node.*\"}[5m])/rate(camino_C_handler_pull_query_count{job=~\"validator-node.*\"}[5m])",
           "interval": "",
           "legendFormat": "pull query",
           "refId": "A"
         },
         {
           "exemplar": true,
-          "expr": "rate(avalanche_C_handler_push_query_sum{job=\"avalanchego\"}[5m])/rate(avalanche_C_handler_push_query_count{job=\"avalanchego\"}[5m])",
+          "expr": "rate(camino_C_handler_push_query_sum{job=~\"validator-node.*\"}[5m])/rate(camino_C_handler_push_query_count{job=~\"validator-node.*\"}[5m])",
           "interval": "",
           "legendFormat": "push query",
           "refId": "B"
         },
         {
           "exemplar": true,
-          "expr": "rate(avalanche_C_handler_chits_sum{job=\"avalanchego\"}[5m])/rate(avalanche_C_handler_chits_count{job=\"avalanchego\"}[5m])",
+          "expr": "rate(camino_C_handler_chits_sum{job=~\"validator-node.*\"}[5m])/rate(camino_C_handler_chits_count{job=~\"validator-node.*\"}[5m])",
           "interval": "",
           "legendFormat": "chits",
           "refId": "C"
         },
         {
           "exemplar": true,
-          "expr": "rate(avalanche_C_handler_accepted_sum{job=\"avalanchego\"}[5m])/rate(avalanche_C_handler_accepted_count{job=\"avalanchego\"}[5m])",
+          "expr": "rate(camino_C_handler_accepted_sum{job=~\"validator-node.*\"}[5m])/rate(camino_C_handler_accepted_count{job=~\"validator-node.*\"}[5m])",
           "interval": "",
           "legendFormat": "accepted",
           "refId": "D"
         },
         {
           "exemplar": true,
-          "expr": "rate(avalanche_C_handler_get_sum{job=\"avalanchego\"}[5m])/rate(avalanche_C_handler_get_count{job=\"avalanchego\"}[5m])",
+          "expr": "rate(camino_C_handler_get_sum{job=~\"validator-node.*\"}[5m])/rate(camino_C_handler_get_count{job=~\"validator-node.*\"}[5m])",
           "interval": "",
           "legendFormat": "get",
           "refId": "E"
         },
         {
           "exemplar": true,
-          "expr": "rate(avalanche_C_handler_put_sum{job=\"avalanchego\"}[5m])/rate(avalanche_C_handler_put_count{job=\"avalanchego\"}[5m])",
+          "expr": "rate(camino_C_handler_put_sum{job=~\"validator-node.*\"}[5m])/rate(camino_C_handler_put_count{job=~\"validator-node.*\"}[5m])",
           "interval": "",
           "legendFormat": "put",
           "refId": "F"
         },
         {
           "exemplar": true,
-          "expr": "rate(avalanche_C_handler_multiput_sum{job=\"avalanchego\"}[5m])/rate(avalanche_C_handler_multi_put_count{job=\"avalanchego\"}[5m])",
+          "expr": "rate(camino_C_handler_multiput_sum{job=~\"validator-node.*\"}[5m])/rate(camino_C_handler_multi_put_count{job=~\"validator-node.*\"}[5m])",
           "interval": "",
           "legendFormat": "multiput",
           "refId": "G"
         },
         {
           "exemplar": true,
-          "expr": "rate(avalanche_C_handler_get_ancestors_sum{job=\"avalanchego\"}[5m])/rate(avalanche_C_handler_get_ancestors_count{job=\"avalanchego\"}[5m])",
+          "expr": "rate(camino_C_handler_get_ancestors_sum{job=~\"validator-node.*\"}[5m])/rate(camino_C_handler_get_ancestors_count{job=~\"validator-node.*\"}[5m])",
           "interval": "",
           "legendFormat": "get ancestors",
           "refId": "H"
         },
         {
           "exemplar": true,
-          "expr": "rate(avalanche_C_handler_get_failed_sum{job=\"avalanchego\"}[5m])/rate(avalanche_C_handler_get_failed_count{job=\"avalanchego\"}[5m])",
+          "expr": "rate(camino_C_handler_get_failed_sum{job=~\"validator-node.*\"}[5m])/rate(camino_C_handler_get_failed_count{job=~\"validator-node.*\"}[5m])",
           "interval": "",
           "legendFormat": "get failed",
           "refId": "I"
         },
         {
           "exemplar": true,
-          "expr": "rate(avalanche_C_handler_query_failed_sum{job=\"avalanchego\"}[5m])/rate(avalanche_C_handler_query_failed_count{job=\"avalanchego\"}[5m])",
+          "expr": "rate(camino_C_handler_query_failed_sum{job=~\"validator-node.*\"}[5m])/rate(camino_C_handler_query_failed_count{job=~\"validator-node.*\"}[5m])",
           "interval": "",
           "legendFormat": "query failed",
           "refId": "J"
         },
         {
           "exemplar": true,
-          "expr": "rate(avalanche_C_handler_get_accepted_sum{job=\"avalanchego\"}[5m])/rate(avalanche_C_handler_get_accepted_count{job=\"avalanchego\"}[5m])",
+          "expr": "rate(camino_C_handler_get_accepted_sum{job=~\"validator-node.*\"}[5m])/rate(camino_C_handler_get_accepted_count{job=~\"validator-node.*\"}[5m])",
           "interval": "",
           "legendFormat": "get accepted",
           "refId": "K"
         },
         {
           "exemplar": true,
-          "expr": "rate(avalanche_C_handler_get_ancestors_failed_sum{job=\"avalanchego\"}[5m])/rate(avalanche_C_handler_get_ancestors_failed_count{job=\"avalanchego\"}[5m])",
+          "expr": "rate(camino_C_handler_get_ancestors_failed_sum{job=~\"validator-node.*\"}[5m])/rate(camino_C_handler_get_ancestors_failed_count{job=~\"validator-node.*\"}[5m])",
           "interval": "",
           "legendFormat": "get ancestors failed",
           "refId": "L"
         },
         {
           "exemplar": true,
-          "expr": "rate(avalanche_C_handler_app_request_sum{job=\"avalanchego\"}[5m])/rate(avalanche_C_handler_app_request_count{job=\"avalanchego\"}[5m])",
+          "expr": "rate(camino_C_handler_app_request_sum{job=~\"validator-node.*\"}[5m])/rate(camino_C_handler_app_request_count{job=~\"validator-node.*\"}[5m])",
           "hide": false,
           "interval": "",
           "legendFormat": "app request",
@@ -1021,7 +1021,7 @@
         },
         {
           "exemplar": true,
-          "expr": "rate(avalanche_C_handler_app_request_failed_sum{job=\"avalanchego\"}[5m])/rate(avalanche_C_handler_app_request_failed_count{job=\"avalanchego\"}[5m])",
+          "expr": "rate(camino_C_handler_app_request_failed_sum{job=~\"validator-node.*\"}[5m])/rate(camino_C_handler_app_request_failed_count{job=~\"validator-node.*\"}[5m])",
           "hide": false,
           "interval": "",
           "legendFormat": "app request failed",
@@ -1029,7 +1029,7 @@
         },
         {
           "exemplar": true,
-          "expr": "rate(avalanche_C_handler_app_response_sum{job=\"avalanchego\"}[5m])/rate(avalanche_C_handler_app_response_count{job=\"avalanchego\"}[5m])",
+          "expr": "rate(camino_C_handler_app_response_sum{job=~\"validator-node.*\"}[5m])/rate(camino_C_handler_app_response_count{job=~\"validator-node.*\"}[5m])",
           "hide": false,
           "interval": "",
           "legendFormat": "app response",
@@ -1037,7 +1037,7 @@
         },
         {
           "exemplar": true,
-          "expr": "rate(avalanche_C_handler_app_gossip_sum{job=\"avalanchego\"}[5m])/rate(avalanche_C_handler_app_gossip_count{job=\"avalanchego\"}[5m])",
+          "expr": "rate(camino_C_handler_app_gossip_sum{job=~\"validator-node.*\"}[5m])/rate(camino_C_handler_app_gossip_count{job=~\"validator-node.*\"}[5m])",
           "hide": false,
           "interval": "",
           "legendFormat": "app gossip",
@@ -1129,7 +1129,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "avg_over_time(avalanche_C_benchlist_benched_weight{job=\"avalanchego\"}[15m]) / 10^9",
+          "expr": "avg_over_time(camino_C_benchlist_benched_weight{job=~\"validator-node.*\"}[15m]) / 10^9",
           "interval": "",
           "legendFormat": "AVAX Benched",
           "refId": "A"
@@ -1218,91 +1218,91 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "rate(avalanche_C_handler_pull_query_count{job=\"avalanchego\"}[5m])",
+          "expr": "rate(camino_C_handler_pull_query_count{job=~\"validator-node.*\"}[5m])",
           "interval": "",
           "legendFormat": "pull query",
           "refId": "A"
         },
         {
           "exemplar": true,
-          "expr": "rate(avalanche_C_handler_push_query_count{job=\"avalanchego\"}[5m])",
+          "expr": "rate(camino_C_handler_push_query_count{job=~\"validator-node.*\"}[5m])",
           "interval": "",
           "legendFormat": "push query",
           "refId": "B"
         },
         {
           "exemplar": true,
-          "expr": "rate(avalanche_C_handler_chits_count{job=\"avalanchego\"}[5m])",
+          "expr": "rate(camino_C_handler_chits_count{job=~\"validator-node.*\"}[5m])",
           "interval": "",
           "legendFormat": "chits",
           "refId": "C"
         },
         {
           "exemplar": true,
-          "expr": "rate(avalanche_C_handler_accepted_count{job=\"avalanchego\"}[5m])",
+          "expr": "rate(camino_C_handler_accepted_count{job=~\"validator-node.*\"}[5m])",
           "interval": "",
           "legendFormat": "accepted",
           "refId": "D"
         },
         {
           "exemplar": true,
-          "expr": "rate(avalanche_C_handler_get_count{job=\"avalanchego\"}[5m])",
+          "expr": "rate(camino_C_handler_get_count{job=~\"validator-node.*\"}[5m])",
           "interval": "",
           "legendFormat": "get",
           "refId": "E"
         },
         {
           "exemplar": true,
-          "expr": "rate(avalanche_C_handler_put_count{job=\"avalanchego\"}[5m])",
+          "expr": "rate(camino_C_handler_put_count{job=~\"validator-node.*\"}[5m])",
           "interval": "",
           "legendFormat": "put",
           "refId": "F"
         },
         {
           "exemplar": true,
-          "expr": "rate(avalanche_C_handler_multi_put_count{job=\"avalanchego\"}[5m])",
+          "expr": "rate(camino_C_handler_multi_put_count{job=~\"validator-node.*\"}[5m])",
           "interval": "",
           "legendFormat": "multiput",
           "refId": "G"
         },
         {
           "exemplar": true,
-          "expr": "rate(avalanche_C_handler_get_ancestors_count{job=\"avalanchego\"}[5m])",
+          "expr": "rate(camino_C_handler_get_ancestors_count{job=~\"validator-node.*\"}[5m])",
           "interval": "",
           "legendFormat": "get ancestors",
           "refId": "H"
         },
         {
           "exemplar": true,
-          "expr": "rate(avalanche_C_handler_get_failed_count{job=\"avalanchego\"}[5m])",
+          "expr": "rate(camino_C_handler_get_failed_count{job=~\"validator-node.*\"}[5m])",
           "interval": "",
           "legendFormat": "get failed",
           "refId": "I"
         },
         {
           "exemplar": true,
-          "expr": "rate(avalanche_C_handler_query_failed_count{job=\"avalanchego\"}[5m])",
+          "expr": "rate(camino_C_handler_query_failed_count{job=~\"validator-node.*\"}[5m])",
           "interval": "",
           "legendFormat": "query failed",
           "refId": "J"
         },
         {
           "exemplar": true,
-          "expr": "rate(avalanche_C_handler_get_accepted_count{job=\"avalanchego\"}[5m])",
+          "expr": "rate(camino_C_handler_get_accepted_count{job=~\"validator-node.*\"}[5m])",
           "interval": "",
           "legendFormat": "get accepted",
           "refId": "K"
         },
         {
           "exemplar": true,
-          "expr": "rate(avalanche_C_handler_get_ancestors_failed_count{job=\"avalanchego\"}[5m])",
+          "expr": "rate(camino_C_handler_get_ancestors_failed_count{job=~\"validator-node.*\"}[5m])",
           "interval": "",
           "legendFormat": "get ancestors failed",
           "refId": "L"
         },
         {
           "exemplar": true,
-          "expr": "rate(avalanche_C_handler_app_request_count{job=\"avalanchego\"}[5m])",
+          "expr": "rate(camino_C_handler_app_request_count{job=~\"validator-node.*\"}[5m])",
           "hide": false,
           "interval": "",
           "legendFormat": "app request",
@@ -1310,7 +1310,7 @@
         },
         {
           "exemplar": true,
-          "expr": "rate(avalanche_C_handler_app_request_failed_count{job=\"avalanchego\"}[5m])",
+          "expr": "rate(camino_C_handler_app_request_failed_count{job=~\"validator-node.*\"}[5m])",
           "hide": false,
           "interval": "",
           "legendFormat": "app request failed",
@@ -1318,7 +1318,7 @@
         },
         {
           "exemplar": true,
-          "expr": "rate(avalanche_C_handler_app_response_count{job=\"avalanchego\"}[5m])",
+          "expr": "rate(camino_C_handler_app_response_count{job=~\"validator-node.*\"}[5m])",
           "hide": false,
           "interval": "",
           "legendFormat": "app response",
@@ -1326,7 +1326,7 @@
         },
         {
           "exemplar": true,
-          "expr": "rate(avalanche_C_handler_app_gossip_count{job=\"avalanchego\"}[5m])",
+          "expr": "rate(camino_C_handler_app_gossip_count{job=~\"validator-node.*\"}[5m])",
           "hide": false,
           "interval": "",
           "legendFormat": "app gossip",
@@ -1412,7 +1412,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "increase(avalanche_C_vm_rpcchainvm_bytes_to_id_cache_hit[5m])/(increase(avalanche_C_vm_rpcchainvm_bytes_to_id_cache_hit[5m])+increase(avalanche_C_vm_rpcchainvm_bytes_to_id_cache_miss[5m]))",
+          "expr": "increase(camino_C_vm_rpcchainvm_bytes_to_id_cache_hit[5m])/(increase(camino_C_vm_rpcchainvm_bytes_to_id_cache_hit[5m])+increase(camino_C_vm_rpcchainvm_bytes_to_id_cache_miss[5m]))",
           "interval": "",
           "legendFormat": "Hit Rate",
           "refId": "A"
@@ -1496,7 +1496,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "increase(avalanche_C_vm_rpcchainvm_missing_cache_hit[5m])/(increase(avalanche_C_vm_rpcchainvm_missing_cache_hit[5m])+increase(avalanche_C_vm_rpcchainvm_missing_cache_miss[5m]))",
+          "expr": "increase(camino_C_vm_rpcchainvm_missing_cache_hit[5m])/(increase(camino_C_vm_rpcchainvm_missing_cache_hit[5m])+increase(camino_C_vm_rpcchainvm_missing_cache_miss[5m]))",
           "interval": "",
           "legendFormat": "Hit Rate",
           "refId": "A"
@@ -1579,7 +1579,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "increase(avalanche_C_vm_rpcchainvm_decided_cache_hit[5m])/(increase(avalanche_C_vm_rpcchainvm_decided_cache_hit[5m])+increase(avalanche_C_vm_rpcchainvm_decided_cache_miss[5m]))",
+          "expr": "increase(camino_C_vm_rpcchainvm_decided_cache_hit[5m])/(increase(camino_C_vm_rpcchainvm_decided_cache_hit[5m])+increase(camino_C_vm_rpcchainvm_decided_cache_miss[5m]))",
           "interval": "",
           "legendFormat": "Hit Rate",
           "refId": "A"
@@ -1662,7 +1662,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "increase(avalanche_C_vm_rpcchainvm_unverified_cache_hit[5m])/(increase(avalanche_C_vm_rpcchainvm_unverified_cache_hit[5m])+increase(avalanche_C_vm_rpcchainvm_unverified_cache_miss[5m]))",
+          "expr": "increase(camino_C_vm_rpcchainvm_unverified_cache_hit[5m])/(increase(camino_C_vm_rpcchainvm_unverified_cache_hit[5m])+increase(camino_C_vm_rpcchainvm_unverified_cache_miss[5m]))",
           "interval": "",
           "legendFormat": "Hit Rate",
           "refId": "A"
@@ -1749,7 +1749,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "avalanche_C_handler_unprocessed_msgs_len",
+          "expr": "camino_C_handler_unprocessed_msgs_len",
           "interval": "",
           "legendFormat": "Pending Messages",
           "refId": "A"
@@ -1838,7 +1838,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "increase(avalanche_C_handler_expired[1m])",
+          "expr": "increase(camino_C_handler_expired[1m])",
           "interval": "",
           "legendFormat": "Expired",
           "refId": "A"
@@ -1854,7 +1854,7 @@
   "schemaVersion": 30,
   "style": "dark",
   "tags": [
-    "Avalanche"
+    "Camino"
   ],
   "templating": {
     "list": []
