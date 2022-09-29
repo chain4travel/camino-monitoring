@@ -644,7 +644,7 @@
       "pluginVersion": "8.2.5",
       "targets": [
         {
-          "expr": "camino_health_checks_failing{job=~\"c4t-node.*\"}",
+          "expr": "camino_health_checks_failing>0",
           "interval": "",
           "legendFormat": "",
           "refId": "A"
