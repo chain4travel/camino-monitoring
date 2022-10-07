@@ -80,7 +80,7 @@
       },
       "gridPos": {
         "h": 7,
-        "w": 6,
+        "w": 12,
         "x": 0,
         "y": 0
       },
@@ -102,85 +102,14 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "camino_network_node_uptime_weighted_average{job=~\"validator-node.*\"}",
+          "expr": "bottomk(10,camino_network_node_uptime_weighted_average{job=~\"validator-node.*\"})",
+          "instant": true,
           "interval": "",
-          "legendFormat": "",
+          "legendFormat": "{{job}}",
           "refId": "A"
         }
       ],
-      "title": "Uptime average",
-      "type": "gauge"
-    },
-    {
-      "datasource": null,
-      "description": "Percentage of the stake that view your node as sufficiently online and correct to vote that node be awarded at the end of the staking period.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "dark-red",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 60
-              },
-              {
-                "color": "#EAB839",
-                "value": 70
-              },
-              {
-                "color": "green",
-                "value": 80
-              },
-              {
-                "color": "green",
-                "value": 100
-              }
-            ]
-          },
-          "unit": "percent"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 6,
-        "x": 6,
-        "y": 0
-      },
-      "id": 41,
-      "options": {
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showThresholdLabels": false,
-        "showThresholdMarkers": true,
-        "text": {}
-      },
-      "pluginVersion": "8.2.5",
-      "targets": [
-        {
-          "exemplar": true,
-          "expr": "camino_network_node_uptime_rewarding_stake{job=~\"validator-node.*\"}",
-          "interval": "",
-          "legendFormat": "Rewarding stake",
-          "refId": "A"
-        }
-      ],
-      "title": "Rewarding stake",
+      "title": "Bottom 10 - Uptime average",
       "type": "gauge"
     },
     {
@@ -269,18 +198,33 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "round(increase(camino_X_vtx_accepted_count{job=~\"validator-node.*\"}[1m]))>0",
+          "expr": "avg(round(increase(camino_X_vtx_accepted_count{job=~\"validator-node.*\"}[1m])))>0",
           "interval": "",
-          "legendFormat": "Accepted",
+          "legendFormat": "Avg. Accepted",
           "refId": "A"
         },
         {
           "exemplar": true,
-          "expr": "round(increase(camino_X_vtx_rejected_count{job=~\"validator-node.*\"}[1m]))>0",
+          "expr": "avg(round(increase(camino_X_vtx_rejected_count{job=~\"validator-node.*\"}[1m])))>0",
           "hide": false,
           "interval": "",
-          "legendFormat": "Rejected",
+          "legendFormat": "Avg. Rejected",
           "refId": "B"
+        },
+        {
+          "exemplar": true,
+          "expr": "bottomk(1, round(increase(camino_X_vtx_accepted_count{job=~\"validator-node.*\"}[1m])))>0",
+          "interval": "",
+          "legendFormat": "Validator min acceptances {{job}}",
+          "refId": "C"
+        },
+        {
+          "exemplar": true,
+          "expr": "topk(1, round(increase(camino_X_vtx_rejected_count{job=~\"validator-node.*\"}[1m])))>0",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "Validator max rejections {{job}}",
+          "refId": "D"
         }
       ],
       "timeFrom": null,
@@ -373,18 +317,33 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "round(increase(camino_P_blks_accepted_count{job=~\"validator-node.*\"}[1m]))>0",
+          "expr": "avg(round(increase(camino_P_blks_accepted_count{job=~\"validator-node.*\"}[1m])))>0",
           "interval": "",
-          "legendFormat": "Accepted",
+          "legendFormat": "Avg. Accepted",
           "refId": "A"
         },
         {
           "exemplar": true,
-          "expr": "round(increase(camino_P_blks_rejected_count{job=~\"validator-node.*\"}[1m]))>0",
+          "expr": "avg(round(increase(camino_P_blks_rejected_count{job=~\"validator-node.*\"}[1m])))>0",
           "hide": false,
           "interval": "",
-          "legendFormat": "Rejected",
+          "legendFormat": "Avg. Rejected",
           "refId": "B"
+        },
+        {
+          "exemplar": true,
+          "expr": "bottomk(1, round(increase(camino_P_blks_accepted_count{job=~\"validator-node.*\"}[1m])))>0",
+          "interval": "",
+          "legendFormat": "Validator min acceptances {{job}}",
+          "refId": "C"
+        },
+        {
+          "exemplar": true,
+          "expr": "topk(1,round(increase(camino_P_blks_rejected_count{job=~\"validator-node.*\"}[1m])))>0",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "Validator max rejections {{job}}",
+          "refId": "D"
         }
       ],
       "timeFrom": null,
@@ -439,13 +398,20 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "round(increase(camino_P_blks_built{job=~\"validator-node.*\"}[1d]))",
+          "expr": "avg(round(increase(camino_P_blks_built{job=~\"validator-node.*\"}[1d])))",
           "interval": "",
-          "legendFormat": "Proposed P blocks",
+          "legendFormat": "Avg. Proposed P blocks",
           "refId": "A"
+        },
+        {
+          "exemplar": true,
+          "expr": "bottomk(1, round(increase(camino_P_blks_built{job=~\"validator-node.*\"}[1d])))",
+          "interval": "",
+          "legendFormat": "Min. Proposed P blocks: {{job}}",
+          "refId": "B"
         }
       ],
-      "title": "Proposed P blocks",
+      "title": "Proposed P blocks (avg/min)",
       "type": "stat"
     },
     {
@@ -715,18 +681,26 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "camino_requests_average_latency",
+          "expr": "topk(10,camino_requests_average_latency)",
           "interval": "",
+          "instant": true,
           "legendFormat": "",
           "refId": "A"
+        },
+        {
+          "exemplar": true,
+          "expr": "avg(camino_requests_average_latency)",
+          "interval": "",
+          "legendFormat": "Average network latency",
+          "refId": "B"
         }
       ],
-      "title": "Network Latency",
+      "title": "Top 10 - highest Network Latency",
       "type": "stat"
     },
     {
       "datasource": null,
-      "description": "Amount of AVAX currently staked",
+      "description": "Amount of CAM currently staked",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -772,9 +746,9 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "camino_P_vm_total_staked{job=~\"validator-node.*\"}/1000000000",
+          "expr": "max(camino_P_vm_total_staked{job=~\"validator-node.*\"})/1000000000",
           "interval": "",
-          "legendFormat": "AVAX",
+          "legendFormat": "CAM",
           "refId": "A"
         }
       ],
@@ -838,7 +812,7 @@
       "pluginVersion": "8.2.5",
       "targets": [
         {
-          "expr": "camino_P_vm_percent_connected{job=~\"validator-node.*\"}",
+          "expr": "max(camino_P_vm_percent_connected{job=~\"validator-node.*\"})",
           "interval": "",
           "legendFormat": "",
           "refId": "A"
@@ -1026,18 +1000,33 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "round(increase(camino_C_blks_accepted_count{job=~\"validator-node.*\"}[1m]))>0",
+            "expr": "avg(round(increase(camino_C_blks_accepted_count{job=~\"validator-node.*\"}[1m])))>0",
           "interval": "",
-          "legendFormat": "Accepted",
+          "legendFormat": "Avg. Accepted",
           "refId": "A"
         },
         {
           "exemplar": true,
-          "expr": "round(increase(camino_C_blks_rejected_count{job=~\"validator-node.*\"}[1m]))>0",
+          "expr": "avg(round(increase(camino_C_blks_rejected_count{job=~\"validator-node.*\"}[1m])))>0",
           "hide": false,
           "interval": "",
-          "legendFormat": "Rejected",
+          "legendFormat": "Avg. Rejected",
           "refId": "B"
+        },
+        {
+          "exemplar": true,
+          "expr": "bottomk(1, round(increase(camino_C_blks_accepted_count{job=~\"validator-node.*\"}[1m])))>0",
+          "interval": "",
+          "legendFormat": "Validator min acceptances: {{job}}",
+          "refId": "C"
+        },
+        {
+          "exemplar": true,
+          "expr": "topk(1, round(increase(camino_C_blks_rejected_count{job=~\"validator-node.*\"}[1m])))>0",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "Validator max rejections: {{job}}",
+          "refId": "D"
         }
       ],
       "timeFrom": null,
@@ -1096,13 +1085,20 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "round(increase(camino_C_blks_built{job=~\"validator-node.*\"}[1d]))",
+          "expr": "avg(round(increase(camino_C_blks_built{job=~\"validator-node.*\"}[1d])))",
           "interval": "",
-          "legendFormat": "Built C blocks",
+          "legendFormat": "Avg. Built C blocks",
           "refId": "A"
+        },
+        {
+          "exemplar": true,
+          "expr": "bottomk(1, round(increase(camino_C_blks_built{job=~\"validator-node.*\"}[1d])))",
+          "interval": "",
+          "legendFormat": "Min. Built C blocks {{job}}",
+          "refId": "B"
         }
       ],
-      "title": "Proposed C blocks",
+      "title": "Proposed C blocks(avg/min)",
       "type": "stat"
     },
     {
@@ -1150,27 +1146,27 @@
       "pluginVersion": "8.2.5",
       "targets": [
         {
-          "expr": "round(increase(camino_X_vtx_accepted_count{job=~\"validator-node.*\"}[1m]))",
+          "expr": "avg(round(increase(camino_X_vtx_accepted_count{job=~\"validator-node.*\"}[1m])))",
           "interval": "",
           "legendFormat": "X Chain",
           "refId": "A"
         },
         {
-          "expr": "round(increase(camino_P_blks_accepted_count{job=~\"validator-node.*\"}[1m]))",
+          "expr": "avg(round(increase(camino_P_blks_accepted_count{job=~\"validator-node.*\"}[1m])))",
           "hide": false,
           "interval": "",
           "legendFormat": "P Chain",
           "refId": "B"
         },
         {
-          "expr": "round(increase(camino_C_blks_accepted_count{job=~\"validator-node.*\"}[1m]))",
+          "expr": "avg(round(increase(camino_C_blks_accepted_count{job=~\"validator-node.*\"}[1m])))",
           "hide": false,
           "interval": "",
           "legendFormat": "C Chain",
           "refId": "C"
         }
       ],
-      "title": "Accepted Blocks/Vertices",
+      "title": "Average accepted Blocks/Vertices",
       "type": "bargauge"
     },
     {
@@ -1472,31 +1468,59 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "increase(camino_db_put_sum{job=~\"validator-node.*\"}[5m])/increase(camino_db_put_count{job=~\"validator-node.*\"}[5m])",
+          "expr": "avg(increase(camino_db_put_sum{job=~\"validator-node.*\"}[5m])/increase(camino_db_put_count{job=~\"validator-node.*\"}[5m]))",
           "interval": "",
-          "legendFormat": "put",
-          "refId": "A"
+          "legendFormat": "avg. put",
+          "refId": "AA"
         },
         {
           "exemplar": true,
-          "expr": "increase(camino_db_get_sum{job=~\"validator-node.*\"}[5m])/increase(camino_db_get_count{job=~\"validator-node.*\"}[5m])",
+          "expr": "bottomk(5, increase(camino_db_put_sum{job=~\"validator-node.*\"}[5m])/increase(camino_db_put_count{job=~\"validator-node.*\"}[5m]))",
           "interval": "",
-          "legendFormat": "get",
-          "refId": "B"
+          "legendFormat": "put({{job}})",
+          "refId": "AM"
         },
         {
           "exemplar": true,
-          "expr": "increase(camino_db_delete_sum{job=~\"validator-node.*\"}[5m])/increase(camino_db_delete_count{job=~\"validator-node.*\"}[5m])",
+          "expr": "avg(increase(camino_db_get_sum{job=~\"validator-node.*\"}[5m])/increase(camino_db_get_count{job=~\"validator-node.*\"}[5m]))",
           "interval": "",
-          "legendFormat": "delete",
-          "refId": "C"
+          "legendFormat": "avg. get",
+          "refId": "BA"
         },
         {
           "exemplar": true,
-          "expr": "increase(camino_db_has_sum{job=~\"validator-node.*\"}[5m])/increase(camino_db_has_count{job=~\"validator-node.*\"}[5m])",
+          "expr": "bottomk(5, increase(camino_db_get_sum{job=~\"validator-node.*\"}[5m])/increase(camino_db_get_count{job=~\"validator-node.*\"}[5m]))",
           "interval": "",
-          "legendFormat": "has",
-          "refId": "D"
+          "legendFormat": "get({{job}})",
+          "refId": "BM"
+        },
+        {
+          "exemplar": true,
+          "expr": "avg(increase(camino_db_delete_sum{job=~\"validator-node.*\"}[5m])/increase(camino_db_delete_count{job=~\"validator-node.*\"}[5m]))",
+          "interval": "",
+          "legendFormat": "avg. delete",
+          "refId": "CA"
+        },
+        {
+          "exemplar": true,
+          "expr": "bottomk(5, increase(camino_db_delete_sum{job=~\"validator-node.*\"}[5m])/increase(camino_db_delete_count{job=~\"validator-node.*\"}[5m]))",
+          "interval": "",
+          "legendFormat": "delete({{job}})",
+          "refId": "CM"
+        },
+        {
+          "exemplar": true,
+          "expr": "avg(increase(camino_db_has_sum{job=~\"validator-node.*\"}[5m])/increase(camino_db_has_count{job=~\"validator-node.*\"}[5m]))",
+          "interval": "",
+          "legendFormat": "avg. has",
+          "refId": "DA"
+        },
+        {
+          "exemplar": true,
+          "expr": "bottomk(5, increase(camino_db_has_sum{job=~\"validator-node.*\"}[5m])/increase(camino_db_has_count{job=~\"validator-node.*\"}[5m]))",
+          "interval": "",
+          "legendFormat": "has({{job}})",
+          "refId": "DM"
         },
         {
           "exemplar": true,
@@ -1536,7 +1560,7 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Database Operations Latency",
+      "title": "Database Operations Latency (avg / bottom5)",
       "type": "timeseries"
     }
   ],

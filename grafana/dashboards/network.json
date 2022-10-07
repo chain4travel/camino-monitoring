@@ -153,7 +153,7 @@
           "exemplar": true,
           "expr": "camino_network_node_uptime_weighted_average{job=~\"validator-node.*\"}",
           "interval": "",
-          "legendFormat": "Uptime average",
+          "legendFormat": "{{job}}",
           "refId": "A"
         }
       ],
@@ -257,7 +257,7 @@
           "exemplar": true,
           "expr": "camino_network_node_uptime_rewarding_stake{job=~\"validator-node.*\"}",
           "interval": "",
-          "legendFormat": "Rewarding stake",
+          "legendFormat": "{{job}}",
           "refId": "A"
         }
       ],
@@ -382,7 +382,7 @@
           "expr": "camino_network_peers{job=~\"validator-node.*\"}",
           "format": "time_series",
           "interval": "",
-          "legendFormat": "Peers connected",
+          "legendFormat": "Peers connected: {{job}}",
           "refId": "B"
         }
       ],
@@ -472,7 +472,7 @@
           "exemplar": true,
           "expr": "camino_requests_current_timeout",
           "interval": "",
-          "legendFormat": "Timeout",
+          "legendFormat": "Timeout {{job}}",
           "refId": "A"
         },
         {
@@ -480,7 +480,7 @@
           "expr": "camino_requests_average_latency",
           "hide": false,
           "interval": "",
-          "legendFormat": "Response Time",
+          "legendFormat": "Response Time {{job}}",
           "refId": "B"
         }
       ],
@@ -568,7 +568,7 @@
           "exemplar": true,
           "expr": "camino_requests_outstanding",
           "interval": "",
-          "legendFormat": "Outstanding Requests",
+          "legendFormat": "{{job}}",
           "refId": "A"
         }
       ],
