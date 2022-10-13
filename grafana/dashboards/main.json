@@ -700,63 +700,6 @@
     },
     {
       "datasource": null,
-      "description": "Amount of CAM currently staked",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          },
-          "unit": "short"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 5,
-        "w": 3,
-        "x": 0,
-        "y": 12
-      },
-      "id": 34,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "text": {},
-        "textMode": "value"
-      },
-      "pluginVersion": "8.2.5",
-      "targets": [
-        {
-          "exemplar": true,
-          "expr": "max(camino_P_vm_total_staked{job=~\"validator-node.*\"})/1000000000",
-          "interval": "",
-          "legendFormat": "CAM",
-          "refId": "A"
-        }
-      ],
-      "title": "Total staked",
-      "type": "stat"
-    },
-    {
-      "datasource": null,
       "description": "Amount of network stake node is currently connected to",
       "fieldConfig": {
         "defaults": {
@@ -820,100 +763,6 @@
       ],
       "title": "Stake connected",
       "type": "stat"
-    },
-    {
-      "datasource": null,
-      "description": "Number of peers node is connected to",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "axisSoftMin": 2,
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "smooth",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "links": [
-            {
-              "title": "Networking Dashboard",
-              "url": "/d/jB1TgdZ7z/network?orgId=1&refresh=10s"
-            }
-          ],
-          "mappings": [],
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          },
-          "unit": "short"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 5,
-        "w": 6,
-        "x": 6,
-        "y": 12
-      },
-      "id": 6,
-      "options": {
-        "legend": {
-          "calcs": [
-            "mean",
-            "lastNotNull",
-            "max",
-            "min"
-          ],
-          "displayMode": "list",
-          "placement": "bottom"
-        },
-        "tooltip": {
-          "mode": "single"
-        }
-      },
-      "pluginVersion": "8.0.5",
-      "targets": [
-        {
-          "expr": "camino_network_peers{job=~\"validator-node.*\"}",
-          "interval": "",
-          "legendFormat": "Peers",
-          "refId": "A"
-        }
-      ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "Peer count",
-      "type": "timeseries"
     },
     {
       "datasource": "Prometheus",
@@ -1087,14 +936,14 @@
           "exemplar": true,
           "expr": "avg(round(increase(camino_C_blks_built{job=~\"validator-node.*\"}[$__range])))",
           "interval": "",
-          "legendFormat": "Avg. Built C blocks",
+          "legendFormat": "Average",
           "refId": "A"
         },
         {
           "exemplar": true,
           "expr": "bottomk(1, round(increase(camino_C_blks_built{job=~\"validator-node.*\"}[$__range])))",
           "interval": "",
-          "legendFormat": "Min. Built C blocks {{company}}",
+          "legendFormat": "{{company}}",
           "refId": "B"
         }
       ],
@@ -1243,73 +1092,6 @@
         }
       ],
       "title": "Processing",
-      "type": "bargauge"
-    },
-    {
-      "datasource": null,
-      "description": "Number of peers currently being benched (ignored) by the node",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 3,
-        "x": 6,
-        "y": 17
-      },
-      "id": 29,
-      "options": {
-        "displayMode": "lcd",
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showUnfilled": true,
-        "text": {}
-      },
-      "pluginVersion": "8.2.5",
-      "targets": [
-        {
-          "expr": "camino_X_benchlist_benched_num{job=~\"validator-node.*\"}",
-          "interval": "",
-          "legendFormat": "X Chain",
-          "refId": "A"
-        },
-        {
-          "expr": "camino_P_benchlist_benched_num{job=~\"validator-node.*\"}",
-          "hide": false,
-          "interval": "",
-          "legendFormat": "P Chain",
-          "refId": "B"
-        },
-        {
-          "expr": "camino_C_benchlist_benched_num{job=~\"validator-node.*\"}",
-          "hide": false,
-          "interval": "",
-          "legendFormat": "C Chain",
-          "refId": "C"
-        }
-      ],
-      "title": "Benched nodes",
       "type": "bargauge"
     },
     {

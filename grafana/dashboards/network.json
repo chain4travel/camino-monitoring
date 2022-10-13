@@ -265,131 +265,6 @@
       "type": "timeseries"
     },
     {
-      "alert": {
-        "alertRuleTags": {},
-        "conditions": [
-          {
-            "evaluator": {
-              "params": [
-                100
-              ],
-              "type": "lt"
-            },
-            "operator": {
-              "type": "and"
-            },
-            "query": {
-              "params": [
-                "B",
-                "5m",
-                "now"
-              ]
-            },
-            "reducer": {
-              "params": [],
-              "type": "avg"
-            },
-            "type": "query"
-          }
-        ],
-        "executionErrorState": "alerting",
-        "for": "2m",
-        "frequency": "1m",
-        "handler": 1,
-        "message": "Peer count is low",
-        "name": "Peer Count alert",
-        "noDataState": "no_data",
-        "notifications": []
-      },
-      "datasource": {
-        "type": "prometheus"
-      },
-      "description": "Number of network peers the node is connected to",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "line"
-            }
-          },
-          "mappings": [],
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "red",
-                "value": null
-              }
-            ]
-          },
-          "unit": "short"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 8,
-        "x": 0,
-        "y": 9
-      },
-      "id": 4,
-      "options": {
-        "legend": {
-          "calcs": [
-            "mean",
-            "max",
-            "min"
-          ],
-          "displayMode": "list",
-          "placement": "bottom"
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "8.0.6",
-      "targets": [
-        {
-          "exemplar": true,
-          "expr": "camino_network_peers{job=~\"validator-node.*\"}",
-          "format": "time_series",
-          "interval": "",
-          "legendFormat": "{{job}}",
-          "refId": "B"
-        }
-      ],
-      "title": "Peer Count",
-      "type": "timeseries"
-    },
-    {
       "datasource": {
         "type": "prometheus"
       },
@@ -472,7 +347,7 @@
           "exemplar": true,
           "expr": "camino_requests_current_timeout",
           "interval": "",
-          "legendFormat": "{{job}} Timeout",
+          "legendFormat": "{{company}}[Timeout]",
           "refId": "A"
         },
         {
@@ -480,7 +355,7 @@
           "expr": "camino_requests_average_latency",
           "hide": false,
           "interval": "",
-          "legendFormat": "{{job}} Response Time",
+          "legendFormat": "{{company}}[Response Time]",
           "refId": "B"
         }
       ],
@@ -568,7 +443,7 @@
           "exemplar": true,
           "expr": "camino_requests_outstanding",
           "interval": "",
-          "legendFormat": "{{job}}",
+          "legendFormat": "{{company}}",
           "refId": "A"
         }
       ],
