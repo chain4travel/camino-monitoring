@@ -398,20 +398,20 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "avg(round(increase(camino_P_blks_built{job=~\"validator-node.*\"}[1d])))",
+          "expr": "avg(round(increase(camino_P_blks_built{job=~\"validator-node.*\"}[$__range])))",
           "interval": "",
           "legendFormat": "Avg. Proposed P blocks",
           "refId": "A"
         },
         {
           "exemplar": true,
-          "expr": "bottomk(1, round(increase(camino_P_blks_built{job=~\"validator-node.*\"}[1d])))",
+          "expr": "bottomk(1, round(increase(camino_P_blks_built{job=~\"validator-node.*\"}[$__range])))",
           "interval": "",
           "legendFormat": "Min. Proposed P blocks: {{job}}",
           "refId": "B"
         }
       ],
-      "title": "Proposed P blocks (avg/min)",
+      "title": "Proposed P blocks (avg/minimum)",
       "type": "stat"
     },
     {
@@ -1003,7 +1003,7 @@
             "expr": "avg(round(increase(camino_C_blks_accepted_count{job=~\"validator-node.*\"}[1m])))>0",
           "interval": "",
           "legendFormat": "Avg. Accepted",
-          "refId": "A"
+          "refId": "Avg. Accepted"
         },
         {
           "exemplar": true,
@@ -1011,7 +1011,7 @@
           "hide": false,
           "interval": "",
           "legendFormat": "Avg. Rejected",
-          "refId": "B"
+          "refId": "Avg. Rejected"
         },
         {
           "exemplar": true,
@@ -1085,20 +1085,20 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "avg(round(increase(camino_C_blks_built{job=~\"validator-node.*\"}[1d])))",
+          "expr": "avg(round(increase(camino_C_blks_built{job=~\"validator-node.*\"}[$__range])))",
           "interval": "",
           "legendFormat": "Avg. Built C blocks",
           "refId": "A"
         },
         {
           "exemplar": true,
-          "expr": "bottomk(1, round(increase(camino_C_blks_built{job=~\"validator-node.*\"}[1d])))",
+          "expr": "bottomk(1, round(increase(camino_C_blks_built{job=~\"validator-node.*\"}[$__range])))",
           "interval": "",
           "legendFormat": "Min. Built C blocks {{job}}",
           "refId": "B"
         }
       ],
-      "title": "Proposed C blocks(avg/min)",
+      "title": "Proposed C blocks(avg/minimum)",
       "type": "stat"
     },
     {
