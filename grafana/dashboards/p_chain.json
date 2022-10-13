@@ -112,7 +112,7 @@
           "exemplar": true,
           "expr": "round(increase(camino_P_blks_accepted_count{job=~\"validator-node.*\"}[1m]))>0",
           "interval": "",
-          "legendFormat": "Accepted",
+          "legendFormat": "{{company}}",
           "refId": "A"
         },
         {
@@ -205,7 +205,7 @@
           "exemplar": true,
           "expr": "round(increase(camino_P_blks_rejected_count{job=~\"validator-node.*\"}[1m]))>0",
           "interval": "",
-          "legendFormat": "Rejected",
+          "legendFormat": "{{company}}",
           "refId": "A"
         }
       ],
@@ -290,7 +290,7 @@
         {
           "expr": "rate(camino_P_blks_accepted_sum{job=~\"validator-node.*\"}[5m]) / rate(camino_P_blks_accepted_count{job=~\"validator-node.*\"}[5m])",
           "interval": "",
-          "legendFormat": "Avg Acceptance Latency",
+          "legendFormat": "{{company}}",
           "refId": "A"
         }
       ],
@@ -376,7 +376,7 @@
           "exemplar": true,
           "expr": "rate(camino_P_blks_rejected_sum{job=~\"validator-node.*\"}[5m]) / rate(camino_P_blks_rejected_count{job=~\"validator-node.*\"}[5m])",
           "interval": "",
-          "legendFormat": "Rejection Latency",
+          "legendFormat": "{{company}}",
           "refId": "A"
         }
       ],
@@ -465,7 +465,7 @@
         {
           "expr": "camino_P_blks_processing{job=~\"validator-node.*\"}",
           "interval": "",
-          "legendFormat": "Transactions",
+          "legendFormat": "{{company}}",
           "refId": "A"
         }
       ],
@@ -557,7 +557,7 @@
           "expr": "(increase(camino_P_handler_chits_count{job=~\"validator-node.*\"}[5m]) + 1) / (increase(camino_P_handler_chits_count{job=~\"validator-node.*\"}[5m]) + increase(camino_P_handler_query_failed_count{job=~\"validator-node.*\"}[5m]) + 1)",
           "instant": false,
           "interval": "",
-          "legendFormat": "% Successful",
+          "legendFormat": "{{company}}",
           "refId": "A"
         }
       ],
@@ -1412,7 +1412,7 @@
           "exemplar": true,
           "expr": "camino_P_handler_unprocessed_msgs_len",
           "interval": "",
-          "legendFormat": "Pending Messages",
+          "legendFormat": "{{company}}",
           "refId": "A"
         }
       ],
@@ -1500,7 +1500,7 @@
         {
           "expr": "increase(camino_P_handler_expired[1m])",
           "interval": "",
-          "legendFormat": "Expired",
+          "legendFormat": "{{company}}",
           "refId": "A"
         }
       ],

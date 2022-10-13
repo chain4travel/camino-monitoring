@@ -105,7 +105,7 @@
           "expr": "bottomk(10,camino_network_node_uptime_weighted_average{job=~\"validator-node.*\"})",
           "instant": true,
           "interval": "",
-          "legendFormat": "{{job}}",
+          "legendFormat": "{{company}}",
           "refId": "A"
         }
       ],
@@ -215,7 +215,7 @@
           "exemplar": true,
           "expr": "bottomk(1, round(increase(camino_X_vtx_accepted_count{job=~\"validator-node.*\"}[1m])))>0",
           "interval": "",
-          "legendFormat": "Validator min acceptances {{job}}",
+          "legendFormat": "Validator min acceptances {{company}}",
           "refId": "C"
         },
         {
@@ -223,7 +223,7 @@
           "expr": "topk(1, round(increase(camino_X_vtx_rejected_count{job=~\"validator-node.*\"}[1m])))>0",
           "hide": false,
           "interval": "",
-          "legendFormat": "Validator max rejections {{job}}",
+          "legendFormat": "Validator max rejections {{company}}",
           "refId": "D"
         }
       ],
@@ -334,7 +334,7 @@
           "exemplar": true,
           "expr": "bottomk(1, round(increase(camino_P_blks_accepted_count{job=~\"validator-node.*\"}[1m])))>0",
           "interval": "",
-          "legendFormat": "Validator min acceptances {{job}}",
+          "legendFormat": "Validator min acceptances {{company}}",
           "refId": "C"
         },
         {
@@ -342,7 +342,7 @@
           "expr": "topk(1,round(increase(camino_P_blks_rejected_count{job=~\"validator-node.*\"}[1m])))>0",
           "hide": false,
           "interval": "",
-          "legendFormat": "Validator max rejections {{job}}",
+          "legendFormat": "Validator max rejections {{company}}",
           "refId": "D"
         }
       ],
@@ -407,7 +407,7 @@
           "exemplar": true,
           "expr": "bottomk(1, round(increase(camino_P_blks_built{job=~\"validator-node.*\"}[$__range])))",
           "interval": "",
-          "legendFormat": "Min. Proposed P blocks: {{job}}",
+          "legendFormat": "Min. Proposed P blocks: {{company}}",
           "refId": "B"
         }
       ],
@@ -1017,7 +1017,7 @@
           "exemplar": true,
           "expr": "bottomk(1, round(increase(camino_C_blks_accepted_count{job=~\"validator-node.*\"}[1m])))>0",
           "interval": "",
-          "legendFormat": "Validator min acceptances: {{job}}",
+          "legendFormat": "Validator min acceptances: {{company}}",
           "refId": "C"
         },
         {
@@ -1025,7 +1025,7 @@
           "expr": "topk(1, round(increase(camino_C_blks_rejected_count{job=~\"validator-node.*\"}[1m])))>0",
           "hide": false,
           "interval": "",
-          "legendFormat": "Validator max rejections: {{job}}",
+          "legendFormat": "Validator max rejections: {{company}}",
           "refId": "D"
         }
       ],
@@ -1094,7 +1094,7 @@
           "exemplar": true,
           "expr": "bottomk(1, round(increase(camino_C_blks_built{job=~\"validator-node.*\"}[$__range])))",
           "interval": "",
-          "legendFormat": "Min. Built C blocks {{job}}",
+          "legendFormat": "Min. Built C blocks {{company}}",
           "refId": "B"
         }
       ],
@@ -1477,7 +1477,7 @@
           "exemplar": true,
           "expr": "bottomk(5, increase(camino_db_put_sum{job=~\"validator-node.*\"}[5m])/increase(camino_db_put_count{job=~\"validator-node.*\"}[5m]))",
           "interval": "",
-          "legendFormat": "put({{job}})",
+          "legendFormat": "put({{company}})",
           "refId": "AM"
         },
         {
@@ -1491,7 +1491,7 @@
           "exemplar": true,
           "expr": "bottomk(5, increase(camino_db_get_sum{job=~\"validator-node.*\"}[5m])/increase(camino_db_get_count{job=~\"validator-node.*\"}[5m]))",
           "interval": "",
-          "legendFormat": "get({{job}})",
+          "legendFormat": "get({{company}})",
           "refId": "BM"
         },
         {
@@ -1505,7 +1505,7 @@
           "exemplar": true,
           "expr": "bottomk(5, increase(camino_db_delete_sum{job=~\"validator-node.*\"}[5m])/increase(camino_db_delete_count{job=~\"validator-node.*\"}[5m]))",
           "interval": "",
-          "legendFormat": "delete({{job}})",
+          "legendFormat": "delete({{company}})",
           "refId": "CM"
         },
         {
@@ -1519,7 +1519,7 @@
           "exemplar": true,
           "expr": "bottomk(5, increase(camino_db_has_sum{job=~\"validator-node.*\"}[5m])/increase(camino_db_has_count{job=~\"validator-node.*\"}[5m]))",
           "interval": "",
-          "legendFormat": "has({{job}})",
+          "legendFormat": "has({{company}})",
           "refId": "DM"
         },
         {
