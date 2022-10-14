@@ -36,55 +36,58 @@
   "liveNow": false,
   "panels": [
     {
-      "datasource": null,
-      "description": "Stake weighted average uptime of your node, as reported by network peers. If this falls below 80% node probably won't be rewarded for the current staking period.",
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "tN8a1FSVk"
+      },
+      "description": "Uptime as provided via the P-Chain API getCurrentValidators",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "thresholds"
           },
+          "decimals": 2,
           "mappings": [],
           "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "dark-red",
-                "value": null
+                "color": "dark-red"
               },
               {
                 "color": "dark-red",
-                "value": 80
+                "value": 0.8
               },
               {
                 "color": "red",
-                "value": 85
+                "value": 0.85
               },
               {
                 "color": "yellow",
-                "value": 90
+                "value": 0.9
               },
               {
                 "color": "green",
-                "value": 95
+                "value": 0.95
               },
               {
                 "color": "green",
-                "value": 100
+                "value": 1
               }
             ]
           },
-          "unit": "percent"
+          "unit": "percentunit"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 7,
+        "h": 8,
         "w": 12,
         "x": 0,
         "y": 0
       },
-      "id": 39,
+      "id": 46,
       "options": {
         "orientation": "auto",
         "reduceOptions": {
@@ -92,24 +95,96 @@
             "lastNotNull"
           ],
           "fields": "",
-          "values": false
+          "values": true
         },
         "showThresholdLabels": false,
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "9.1.7",
       "targets": [
         {
-          "exemplar": true,
-          "expr": "bottomk(10,camino_network_node_uptime_weighted_average{job=~\"validator-node.*\"})",
-          "instant": true,
-          "interval": "",
-          "legendFormat": "{{company}}",
-          "refId": "A"
+          "columns": [
+            {
+              "selector": "nodeID",
+              "text": "Node Id",
+              "type": "string"
+            },
+            {
+              "selector": "uptime",
+              "text": "Uptime",
+              "type": "number"
+            }
+          ],
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "tN8a1FSVk"
+          },
+          "filters": [],
+          "format": "table",
+          "global_query_id": "",
+          "hide": false,
+          "parser": "backend",
+          "refId": "A",
+          "root_selector": "result.validators",
+          "source": "url",
+          "summarizeExpression": "",
+          "type": "json",
+          "uql": "parse-json",
+          "url": "https://columbus.camino.foundation/ext/bc/P",
+          "url_options": {
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "data": "{\"jsonrpc\": \"2.0\",\"method\": \"platform.getCurrentValidators\",\"params\": {},\"id\": 1\n}",
+            "headers": [
+              {
+                "key": "content-type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "params": [
+              {
+                "key": "content",
+                "value": "value"
+              }
+            ]
+          }
         }
       ],
-      "title": "Bottom 10 - Uptime average",
+      "title": "Uptime <= 99%",
+      "transformations": [
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "lowerOrEqual",
+                  "options": {
+                    "value": 0.99
+                  }
+                },
+                "fieldName": "Uptime"
+              }
+            ],
+            "match": "all",
+            "type": "include"
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "desc": false,
+                "field": "Uptime"
+              }
+            ]
+          }
+        }
+      ],
       "type": "gauge"
     },
     {
@@ -681,10 +756,10 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "topk(10,camino_requests_average_latency)",
+          "expr": "topk(5,camino_requests_average_latency)",
           "interval": "",
           "instant": true,
-          "legendFormat": "",
+          "legendFormat": "{{company}}",
           "refId": "A"
         },
         {
@@ -695,7 +770,7 @@
           "refId": "B"
         }
       ],
-      "title": "Top 10 - highest Network Latency",
+      "title": "Top 5 - highest Network Latency",
       "type": "stat"
     },
     {

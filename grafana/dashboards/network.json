@@ -56,7 +56,7 @@
       "datasource": {
         "type": "prometheus"
       },
-      "description": "Stake weighted average uptime of your node, as reported by network peers. If this falls below 80% node probably won't be rewarded for the current staking period.",
+      "description": "Real uptime of your node as provided by https://docs.camino.foundation/developer/apis/camino-node-apis/p-chain#platformgetcurrentvalidators",
       "fieldConfig": {
         "defaults": {
           "color": {
