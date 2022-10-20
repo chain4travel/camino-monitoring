@@ -1,0 +1,14 @@
+apiVersion: 1
+
+contactPoints:
+  - orgId: 1
+    name: email
+    receivers:
+      - uid: 2
+        type: email
+        settings:
+          addresses: me@example.com;you@example.com
+          singleEmail: false
+#          message: my optional message to include
+          subject: |
+            {{ template "default.title" . }}
