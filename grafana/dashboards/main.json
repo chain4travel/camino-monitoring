@@ -632,33 +632,56 @@
       "type": "gauge"
     },
     {
-      "datasource": null,
-      "description": "Number of currently failing internal health checks",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "description": "Percentage of connected validators",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "thresholds"
           },
-          "mappings": [],
-          "max": 4,
+          "decimals": 1,
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "index": 0,
+                  "text": "No data"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "max": 1,
           "min": 0,
           "thresholds": {
-            "mode": "absolute",
+            "mode": "percentage",
             "steps": [
               {
-                "color": "green",
+                "color": "#C4162A",
                 "value": null
               },
               {
-                "color": "#EAB839",
-                "value": 1
+                "color": "red",
+                "value": 80
               },
               {
-                "color": "red",
-                "value": 2
+                "color": "orange",
+                "value": 85
+              },
+              {
+                "color": "yellow",
+                "value": 90
+              },
+              {
+                "color": "dark-green",
+                "value": 95
               }
             ]
-          }
+          },
+          "unit": "percentunit"
         },
         "overrides": []
       },
@@ -666,7 +689,7 @@
         "h": 5,
         "w": 3,
         "x": 6,
-        "y": 7
+        "y": 8
       },
       "id": 37,
       "options": {
@@ -679,19 +702,29 @@
           "values": false
         },
         "showThresholdLabels": false,
-        "showThresholdMarkers": true,
-        "text": {}
+        "showThresholdMarkers": true
       },
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "9.2.0",
       "targets": [
         {
-          "expr": "camino_health_checks_failing>0",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "ping_validator_status{instance=\"push_daemon\",job=\"validators_status\"} * (connected{instance=\"push_daemon\",job=\"validators_status\"} / (connected{instance=\"push_daemon\",job=\"validators_status\"} + disconnected{instance=\"push_daemon\",job=\"validators_status\"}))",
+          "format": "time_series",
+          "hide": false,
+          "instant": false,
           "interval": "",
-          "legendFormat": "",
+          "legendFormat": " ",
+          "range": true,
           "refId": "A"
         }
       ],
-      "title": "Failing health checks",
+      "title": "Validators connected",
+      "transformations": [],
       "type": "gauge"
     },
     {
@@ -774,7 +807,10 @@
       "type": "stat"
     },
     {
-      "datasource": null,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
       "description": "Amount of network stake node is currently connected to",
       "fieldConfig": {
         "defaults": {
@@ -806,10 +842,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
+        "h": 7,
         "w": 3,
         "x": 3,
-        "y": 12
+        "y": 13
       },
       "id": 35,
       "options": {
@@ -827,9 +863,13 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "9.1.7",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
           "expr": "max(camino_P_vm_percent_connected{job=~\"validator-node.*\"})",
           "interval": "",
           "legendFormat": "",
@@ -1094,7 +1134,10 @@
       "type": "bargauge"
     },
     {
-      "datasource": null,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
       "description": "Number of blocks/vertices currently being processed by the node",
       "fieldConfig": {
         "defaults": {
@@ -1126,16 +1169,18 @@
       "gridPos": {
         "h": 7,
         "w": 3,
-        "x": 3,
-        "y": 17
+        "x": 6,
+        "y": 13
       },
       "id": 18,
       "options": {
         "displayMode": "lcd",
+        "minVizHeight": 10,
+        "minVizWidth": 0,
         "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
-            "lastNotNull"
+            "changeCount"
           ],
           "fields": "",
           "values": false
@@ -1143,26 +1188,41 @@
         "showUnfilled": true,
         "text": {}
       },
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "9.1.7",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
           "expr": "camino_X_vtx_processing{job=~\"validator-node.*\"}",
+          "hide": true,
           "interval": "",
           "legendFormat": "X Chain",
           "refId": "A"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
           "expr": "camino_P_blks_processing{job=~\"validator-node.*\"}",
-          "hide": false,
+          "hide": true,
           "interval": "",
           "legendFormat": "P Chain",
           "refId": "B"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
           "expr": "camino_C_blks_processing{job=~\"validator-node.*\"}",
           "hide": false,
           "interval": "",
-          "legendFormat": "C Chain",
+          "legendFormat": "{{company}}",
+          "range": true,
           "refId": "C"
         }
       ],
@@ -1170,13 +1230,17 @@
       "type": "bargauge"
     },
     {
-      "datasource": null,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
       "description": "Percentage of successful queries per chain in the last minute",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "continuous-RdYlGr"
           },
+          "decimals": 2,
           "mappings": [],
           "max": 1,
           "min": 0.8,
@@ -1205,11 +1269,13 @@
         "h": 7,
         "w": 3,
         "x": 9,
-        "y": 17
+        "y": 13
       },
       "id": 30,
       "options": {
         "displayMode": "gradient",
+        "minVizHeight": 10,
+        "minVizWidth": 0,
         "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
@@ -1221,31 +1287,47 @@
         "showUnfilled": true,
         "text": {}
       },
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "9.1.7",
       "targets": [
         {
-          "expr": "(increase(camino_X_handler_chits_count{job=~\"validator-node.*\"}[1m]) + 1) / (increase(camino_X_handler_chits_count{job=~\"validator-node.*\"}[1m]) + increase(camino_X_handler_query_failed_count{job=~\"validator-node.*\"}[1m]) + 1)",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "avg((increase(camino_X_handler_chits_count{job=~\"validator-node.*\"}[1m]) + 1) / (increase(camino_X_handler_chits_count{job=~\"validator-node.*\"}[1m]) + increase(camino_X_handler_query_failed_count{job=~\"validator-node.*\"}[1m]) + 1))",
           "interval": "",
           "legendFormat": "X Chain",
+          "range": true,
           "refId": "A"
         },
         {
-          "expr": "(increase(camino_P_handler_chits_count{job=~\"validator-node.*\"}[1m]) + 1) / (increase(camino_P_handler_chits_count{job=~\"validator-node.*\"}[1m]) + increase(camino_P_handler_query_failed_count{job=~\"validator-node.*\"}[1m]) + 1)",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "avg((increase(camino_P_handler_chits_count{job=~\"validator-node.*\"}[1m]) + 1) / (increase(camino_P_handler_chits_count{job=~\"validator-node.*\"}[1m]) + increase(camino_P_handler_query_failed_count{job=~\"validator-node.*\"}[1m]) + 1)) ",
           "hide": false,
           "interval": "",
           "legendFormat": "P Chain",
+          "range": true,
           "refId": "B"
         },
         {
-          "expr": "(increase(camino_C_handler_chits_count{job=~\"validator-node.*\"}[1m]) + 1) / (increase(camino_C_handler_chits_count{job=~\"validator-node.*\"}[1m]) + increase(camino_C_handler_query_failed_count{job=~\"validator-node.*\"}[1m]) + 1)",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "avg((increase(camino_C_handler_chits_count{job=~\"validator-node.*\"}[1m]) + 1) / (increase(camino_C_handler_chits_count{job=~\"validator-node.*\"}[1m]) + increase(camino_C_handler_query_failed_count{job=~\"validator-node.*\"}[1m]) + 1)) ",
           "hide": false,
           "interval": "",
           "legendFormat": "C Chain",
+          "range": true,
           "refId": "C"
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Queries success",
       "type": "bargauge"
     },
