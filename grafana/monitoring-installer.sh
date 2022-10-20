@@ -13,7 +13,7 @@ fi
 
 #helper function that prints usage
 usage () {
-  echo "Usage: $0 [--1|--2|--3|--4|--5|--help]"
+  echo "Usage: $0 [--1|--2|--3|--4|--5|--6|--help]"
   echo ""
   echo "Options:"
   echo "   --help   Shows this message"
@@ -22,6 +22,8 @@ usage () {
   echo "   --3      Step 3: Installs node_exporter"
   echo "   --4      Step 4: Installs CaminoGo Grafana dashboards"
   echo "   --5      Step 5: (Optional) Installs additional dashboards"
+  echo "   --6      Step 6: Installs push validators status daemon"
+  echo "            Additional args: prometheus_url:port validators_api_base_url"
   echo ""
   echo "Run without any options, script will download and install latest version of CaminoGo dashboards."
 }
@@ -120,12 +122,12 @@ install_prometheus() {
     echo "[Install]"
     echo "WantedBy=multi-user.target"
   }>>prometheus.service
-  sudo cp prometheus.service /etc/systemd/system/prometheus.service
-
-  echo "Creating Prometheus service..."
-  sudo systemctl daemon-reload
-  sudo systemctl start prometheus
-  sudo systemctl enable prometheus
+#  sudo cp prometheus.service /etc/systemd/system/prometheus.service
+#
+#  echo "Creating Prometheus service..."
+#  sudo systemctl daemon-reload
+#  sudo systemctl start prometheus
+#  sudo systemctl enable prometheus
 
   echo
   echo "Done!"
@@ -389,6 +391,61 @@ install_extras() {
   echo "It might take up to 30s for new versions to show up in Grafana."
 }
 
+
+install_push_daemon() {
+  #check for installation
+  if test -f "/etc/grafana/grafana.ini"; then
+    echo "CaminoGo monitoring installer"
+    echo "--------------------------------"
+  else
+    echo "Node monitoring installation not found!"
+    echo
+    echo "Please refer to the tutorial:"
+    echo "https://docs.avax.network/nodes/maintain/setting-up-node-monitoring"
+    echo
+    usage
+    exit 0
+  fi
+
+  echo "STEP 6: Installing push validators status daemon"
+  echo
+  get_environment
+  echo "Downloading..."
+  mkdir -p /tmp/push-daemon
+  cd /tmp/push-daemon
+
+  wget -nd -m -nv https://raw.githubusercontent.com/chain4travel/camino-monitoring/main/grafana/push_validators_status.sh
+  chmod +x push_validators_status.sh
+  sudo mv push_validators_status.sh /usr/local/bin/
+  echo "Creating service..."
+
+  {
+    echo "[Unit]"
+    echo "Description=Push validators status exporter"
+    echo "Wants=network-online.target"
+    echo "After=network-online.target"
+    echo ""
+    echo "[Service]"
+    echo "Type=simple"
+    echo "User=prometheus"
+    echo "Group=prometheus"
+    echo "ExecReload=/bin/kill -HUP \$MAINPID"
+    echo "ExecStart=/usr/local/bin/push_validators_status.sh ${1} ${2}"
+    echo "ExecStop=/usr/local/bin/push_validators_status.sh ${1} ${2} cleanup"
+    echo ""
+    echo "[Install]"
+    echo "WantedBy=multi-user.target"
+  }>>push_validators_status_exporter.service
+  sudo mv push_validators_status_exporter.service /etc/systemd/system/
+  cd /etc/systemd/system/
+  sudo systemctl start push_validators_status_exporter
+  sudo systemctl enable push_validators_status_exporter
+  rm -rf /tmp/push-daemon
+
+  echo
+  echo "Done!"
+}
+
 if [ $# -ne 0 ] #arguments check
 then
   case $1 in
@@ -410,6 +467,15 @@ then
       ;;
     --5) #install extra dashboards
       install_extras
+      exit 0
+      ;;
+    --6) #install push validators status daemon
+      if [[ $# -ne 3 ]] ; then
+          echo 'Required number of arguments: 3'
+          usage
+          exit 1
+      fi
+      install_push_daemon $2 $3
       exit 0
       ;;
     --help)
