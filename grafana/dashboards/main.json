@@ -728,7 +728,10 @@
       "type": "gauge"
     },
     {
-      "datasource": null,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
       "description": "Average time to get a response from a peer",
       "fieldConfig": {
         "defaults": {
@@ -759,7 +762,7 @@
               }
             ]
           },
-          "unit": "ns"
+          "unit": "ms"
         },
         "overrides": []
       },
@@ -767,7 +770,7 @@
         "h": 5,
         "w": 3,
         "x": 9,
-        "y": 7
+        "y": 8
       },
       "id": 8,
       "options": {
@@ -785,21 +788,32 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "9.1.7",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "topk(5,camino_requests_average_latency)",
-          "interval": "",
+          "expr": "topk(5,camino_requests_average_latency / 1000000)",
           "instant": true,
+          "interval": "",
           "legendFormat": "{{company}}",
           "refId": "A"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "avg(camino_requests_average_latency)",
+          "expr": "avg(camino_requests_average_latency/ 1000000)",
           "interval": "",
-          "legendFormat": "Average network latency",
+          "legendFormat": "avg request latency of all nodes in #ms",
+          "range": true,
           "refId": "B"
         }
       ],
