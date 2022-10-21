@@ -4,15 +4,16 @@
 
 #stop on errors
 set -e
+PUSH_GATEWAY_DEFAULT_URL_PORT=localhost:9091
 
 #running as root gives the wrong homedir, check and exit if run with sudo.
 if ((EUID == 0)); then
-    echo "The script is not designed to run as root user. Please run it without sudo prefix."
-    exit
+  echo "The script is not designed to run as root user. Please run it without sudo prefix."
+  exit
 fi
 
 #helper function that prints usage
-usage () {
+usage() {
   echo "Usage: $0 [--1|--2|--3|--4|--5|--6|--help]"
   echo ""
   echo "Options:"
@@ -22,23 +23,22 @@ usage () {
   echo "   --3      Step 3: Installs node_exporter"
   echo "   --4      Step 4: Installs CaminoGo Grafana dashboards"
   echo "   --5      Step 5: (Optional) Installs additional dashboards"
-  echo "   --6      Step 6: Installs push validators status daemon"
-  echo "            Additional args: prometheus_url:port validators_api_base_url"
+  echo "   --6      Step 6: Installs prometheus push gateway"
+  echo "   --7      Step 7: Installs push validators status daemon"
+  echo "            Additional args: validators_api_base_url"
   echo ""
   echo "Run without any options, script will download and install latest version of CaminoGo dashboards."
 }
 
 #helper function to check for presence of required commands, and install if missing
-check_reqs () {
-  if ! command -v curl &> /dev/null
-  then
-      echo "curl could not be found, will install..."
-      sudo apt-get install curl -y
+check_reqs() {
+  if ! command -v curl &>/dev/null; then
+    echo "curl could not be found, will install..."
+    sudo apt-get install curl -y
   fi
-  if ! command -v wget &> /dev/null
-  then
-      echo "wget could not be found, will install..."
-      sudo apt-get install wget -y
+  if ! command -v wget &>/dev/null; then
+    echo "wget could not be found, will install..."
+    sudo apt-get install wget -y
   fi
 }
 
@@ -46,8 +46,8 @@ check_reqs () {
 get_environment() {
   echo "Checking environment..."
   check_reqs
-  foundArch="$(uname -m)"                         #get system architecture
-  foundOS="$(uname)"                              #get OS
+  foundArch="$(uname -m)" #get system architecture
+  foundOS="$(uname)"      #get OS
   if [ "$foundOS" != "Linux" ]; then
     #sorry, don't know you.
     echo "Unsupported operating system: $foundOS!"
@@ -55,10 +55,10 @@ get_environment() {
     exit
   fi
   if [ "$foundArch" = "aarch64" ]; then
-    getArch="arm64"                               #we're running on arm arch (probably RasPi)
+    getArch="arm64" #we're running on arm arch (probably RasPi)
     echo "Found arm64 architecture..."
   elif [ "$foundArch" = "x86_64" ]; then
-    getArch="amd64"                               #we're running on intel/amd
+    getArch="amd64" #we're running on intel/amd
     echo "Found amd64 architecture..."
   else
     #sorry, don't know you.
@@ -79,7 +79,7 @@ install_prometheus() {
   cd /tmp/camino-monitoring-installer/prometheus
 
   promFileName="$(curl -s https://api.github.com/repos/prometheus/prometheus/releases/latest | grep -o "http.*linux-$getArch\.tar\.gz")"
-  if [[ $(wget -S --spider "$promFileName"  2>&1 | grep 'HTTP/1.1 200 OK') ]]; then
+  if [[ $(wget -S --spider "$promFileName" 2>&1 | grep 'HTTP/1.1 200 OK') ]]; then
     echo "Prometheus install archive found: $promFileName"
   else
     echo "Unable to find Prometheus install archive. Exiting."
@@ -121,13 +121,13 @@ install_prometheus() {
     echo ""
     echo "[Install]"
     echo "WantedBy=multi-user.target"
-  }>>prometheus.service
-#  sudo cp prometheus.service /etc/systemd/system/prometheus.service
-#
-#  echo "Creating Prometheus service..."
-#  sudo systemctl daemon-reload
-#  sudo systemctl start prometheus
-#  sudo systemctl enable prometheus
+  } >>prometheus.service
+  sudo cp prometheus.service /etc/systemd/system/prometheus.service
+
+  echo "Creating Prometheus service..."
+  sudo systemctl daemon-reload
+  sudo systemctl start prometheus
+  sudo systemctl enable prometheus
 
   echo
   echo "Done!"
@@ -234,7 +234,7 @@ install_exporter() {
     echo ""
     echo "[Install]"
     echo "WantedBy=multi-user.target"
-  }>>node_exporter.service
+  } >>node_exporter.service
   sudo cp node_exporter.service /etc/systemd/system/node_exporter.service
 
   sudo systemctl start node_exporter
@@ -253,7 +253,12 @@ install_exporter() {
     echo "      - targets: ['localhost:9100']"
     echo "        labels:"
     echo "          alias: 'machine'"
-  }>>prometheus.yml
+    echo "  - job_name: 'pushgateway'"
+    echo "    honor_labels: true"
+    echo "    static_configs:"
+    echo "      - targets: ['${PUSH_GATEWAY_DEFAULT_URL_PORT}']"
+
+  } >>prometheus.yml
   sudo cp prometheus.yml /etc/prometheus/
   sudo systemctl restart prometheus
   echo
@@ -391,6 +396,58 @@ install_extras() {
   echo "It might take up to 30s for new versions to show up in Grafana."
 }
 
+install_push_gateway() {
+  echo "CaminoGo monitoring installer"
+  echo "--------------------------------"
+  echo "STEP 6: Installing Prometheus Push Gateway"
+  echo
+  get_environment
+  check_reqs
+  mkdir -p /tmp/prometheus_push_gateway
+  cd /tmp/prometheus_push_gateway
+
+  promFileName="$(curl -s https://api.github.com/repos/prometheus/pushgateway/releases/latest | grep -o "http.*linux-$getArch\.tar\.gz")"
+  if [[ $(wget -S --spider "$promFileName" 2>&1 | grep 'HTTP/1.1 200 OK') ]]; then
+    echo "Prometheus Push Gateway install archive found: $promFileName"
+  else
+    echo "Unable to find Prometheus install archive. Exiting."
+    exit
+  fi
+  echo "Attempting to download: $promFileName"
+  wget -nv --show-progress -O push_gateway.tar.gz "$promFileName"
+  tar xvf push_gateway.tar.gz --strip-components=1
+  sudo mv pushgateway /usr/local/bin/
+
+  echo "Creating service..."
+
+  {
+    echo "[Unit]"
+    echo "Description=Push validators status exporter"
+    echo "Wants=network-online.target"
+    echo "After=network-online.target"
+    echo ""
+    echo "[Service]"
+    echo "Type=simple"
+    echo "User=prometheus"
+    echo "Group=prometheus"
+    echo "ExecReload=/bin/kill -HUP \$MAINPID"
+    echo "ExecStart=/usr/local/bin/pushgateway"
+    echo ""
+    echo "[Install]"
+    echo "WantedBy=multi-user.target"
+  } >>push_gateway.service
+  sudo mv push_gateway.service /etc/systemd/system/
+  cd /etc/systemd/system/
+  echo "Creating Prometheus Push Gateway service..."
+  sudo systemctl daemon-reload
+  sudo systemctl start push_gateway
+  sudo systemctl enable push_gateway
+  rm -rf /tmp/prometheus_push_gateway
+
+  echo
+  echo "Done!"
+  exit 0
+}
 
 install_push_daemon() {
   #check for installation
@@ -407,7 +464,7 @@ install_push_daemon() {
     exit 0
   fi
 
-  echo "STEP 6: Installing push validators status daemon"
+  echo "STEP 7: Installing push validators status daemon"
   echo
   get_environment
   echo "Downloading..."
@@ -435,9 +492,10 @@ install_push_daemon() {
     echo ""
     echo "[Install]"
     echo "WantedBy=multi-user.target"
-  }>>push_validators_status_exporter.service
+  } >>push_validators_status_exporter.service
   sudo mv push_validators_status_exporter.service /etc/systemd/system/
   cd /etc/systemd/system/
+  sudo systemctl daemon-reload
   sudo systemctl start push_validators_status_exporter
   sudo systemctl enable push_validators_status_exporter
   rm -rf /tmp/push-daemon
@@ -446,42 +504,45 @@ install_push_daemon() {
   echo "Done!"
 }
 
-if [ $# -ne 0 ] #arguments check
-then
+if [ $# -ne 0 ]; then #arguments check
   case $1 in
-    --1) #install prometheus
-      install_prometheus
-      exit 0
-      ;;
-    --2) #install grafana
-      install_grafana
-      exit 0
-      ;;
-    --3) #install node_exporter
-      install_exporter
-      exit 0
-      ;;
-    --4) #install CaminoGo dashboards
-      install_dashboards
-      exit 0
-      ;;
-    --5) #install extra dashboards
-      install_extras
-      exit 0
-      ;;
-    --6) #install push validators status daemon
-      if [[ $# -ne 3 ]] ; then
-          echo 'Required number of arguments: 3'
-          usage
-          exit 1
-      fi
-      install_push_daemon $2 $3
-      exit 0
-      ;;
-    --help)
+  --1) #install prometheus
+    install_prometheus
+    exit 0
+    ;;
+  --2) #install grafana
+    install_grafana
+    exit 0
+    ;;
+  --3) #install node_exporter
+    install_exporter
+    exit 0
+    ;;
+  --4) #install CaminoGo dashboards
+    install_dashboards
+    exit 0
+    ;;
+  --5) #install extra dashboards
+    install_extras
+    exit 0
+    ;;
+  --6) #install extra dashboards
+    install_push_gateway
+    exit 0
+    ;;
+  --7) #install push validators status daemon
+    if [[ $# -ne 2 ]]; then
+      echo 'Required number of arguments: 2'
       usage
-      exit 0
-      ;;
+      exit 1
+    fi
+    install_push_daemon PUSH_GATEWAY_DEFAULT_URL_PORT $3
+    exit 0
+    ;;
+  --help)
+    usage
+    exit 0
+    ;;
   esac
 fi
 install_dashboards
