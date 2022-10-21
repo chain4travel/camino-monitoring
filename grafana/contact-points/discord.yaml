@@ -7,7 +7,7 @@ contactPoints:
       - uid: 1
         type: discord
         settings:
-          url: https://discord.com/api/webhooks/1025325437179658280/RtaBNCF-vYinS9OMVLVWL4Ohwsm9jhTv0GMWvG8Doer773qTzu5EwHyjdyJuDRqHUTSP
+          url: DISCORD_WEBHOOK_URL
           use_discord_username: Grafana
           message: |
             {{ template "default.message" . }}

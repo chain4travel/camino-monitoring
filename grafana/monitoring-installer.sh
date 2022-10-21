@@ -21,7 +21,8 @@ usage() {
   echo "   --1      Step 1: Installs Prometheus"
   echo "   --2      Step 2: Installs Grafana"
   echo "   --3      Step 3: Installs node_exporter"
-  echo "   --4      Step 4: Installs CaminoGo Grafana dashboards"
+  echo "   --4      Step 4: Installs CaminoGo Grafana dashboards, alerts and contact points"
+  echo "            Additional args: email, discord_webhook_url"
   echo "   --5      Step 5: (Optional) Installs additional dashboards"
   echo "   --6      Step 6: Installs prometheus push gateway"
   echo "   --7      Step 7: Installs push validators status daemon"
@@ -317,6 +318,19 @@ install_dashboards() {
   sudo mkdir -p /etc/grafana/dashboards
   sudo cp *.json /etc/grafana/dashboards
 
+  # copy alerts and contact points
+  wget -nd -m -nv https://raw.githubusercontent.com/chain4travel/camino-monitoring/main/grafana/alerts/c_latency.yaml
+  wget -nd -m -nv https://raw.githubusercontent.com/chain4travel/camino-monitoring/main/grafana/alerts/validators_below_90.yaml
+  wget -nd -m -nv https://raw.githubusercontent.com/chain4travel/camino-monitoring/main/grafana/alerts/validators_below_95.yaml
+  wget -nd -m -nv https://raw.githubusercontent.com/chain4travel/camino-monitoring/main/grafana/contact-points/discord.yaml
+  wget -nd -m -nv https://raw.githubusercontent.com/chain4travel/camino-monitoring/main/grafana/contact-points/email.yaml
+
+  sed -i "s/EMAIL_ADDRESS/$1/g" email.yaml
+  sed -i "s/DISCORD_WEBHOOK_URL/$2/g" discord.yaml
+
+  sudo mkdir -p /etc/grafana/provisioning/alerting
+  sudo cp *.yaml /etc/grafana/provisioning/alerting
+
   if [ "$provisioningDone" = "false" ]; then
     echo
     echo "Provisioning dashboards..."
@@ -519,7 +533,12 @@ if [ $# -ne 0 ]; then #arguments check
     exit 0
     ;;
   --4) #install CaminoGo dashboards
-    install_dashboards
+    if [[ $# -ne 3 ]]; then
+      echo 'Required number of arguments: 3'
+      usage
+      exit 1
+    fi
+    install_dashboards $2 $3
     exit 0
     ;;
   --5) #install extra dashboards
@@ -545,6 +564,5 @@ if [ $# -ne 0 ]; then #arguments check
     ;;
   esac
 fi
-install_dashboards
 
 exit 0
