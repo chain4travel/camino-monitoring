@@ -9,13 +9,14 @@ query_validators_status() {
   if [[ "$response" == *"\"error\":{\"code\""* ]] || [[ "$status_code" -ne 200 ]]; then
     return 1
   else
-    extract_metrics
+    extract_metric_uptime
+    extract_metric_connected
     return 0
   fi
 }
 
-extract_metrics() {
-  metrics=$(echo $response |
+extract_metric_connected() {
+  metric_connected=$(echo $response |
     jq |
     grep connected |
     sed -e 's/"connected": //g' -e 's/,//g' -e 's/^[ ]*//g' |
@@ -25,6 +26,14 @@ extract_metrics() {
     sed 's/false/disconnected/' |
     xargs -n 2 echo |
     awk '{ for (i=NF; i>1; i--) printf("%s ",$i); print $1"\\n";}')
+}
+extract_metric_uptime() {
+  metric_uptime=$(echo $response | sed "s/$status_code//g"|
+    jq '.result.validators[] | .nodeID + " " + .uptime' | # select json attributes
+    sed 's/"NodeID/uptime{nodeID="NodeID/' | # add metric label prefix
+    sed 's/ /"} /g' | # add label suffix
+    sed 's/"$//' | # remove trailing quotes
+    awk '{ for (i=0; i<1; i++) printf("%s",$i); print "\\n";}')
 }
 
 cleanup() {
@@ -45,7 +54,8 @@ while true; do
   if query_validators_status; then
     echo "ping_validator_status 1" | curl --data-binary @- ${PUSH_GATEWAY_URL_PORT}/metrics/job/validators_status/instance/push_daemon
     cat <<EOF | curl --data-binary @- ${PUSH_GATEWAY_URL_PORT}/metrics/job/validators_status/instance/push_daemon
-    $(echo -e $metrics)
+    $(echo -e $metric_connected)
+    $(echo -e $metric_uptime)
 EOF
     echo "Pushing metrics..."
   else

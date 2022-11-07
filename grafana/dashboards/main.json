@@ -37,8 +37,8 @@
   "panels": [
     {
       "datasource": {
-        "type": "yesoreyeram-infinity-datasource",
-        "uid": "tN8a1FSVk"
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
       },
       "description": "Uptime as provided via the P-Chain API getCurrentValidators",
       "fieldConfig": {
@@ -48,12 +48,14 @@
           },
           "decimals": 2,
           "mappings": [],
+          "max": 1,
           "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "dark-red"
+                "color": "dark-red",
+                "value": null
               },
               {
                 "color": "dark-red",
@@ -72,7 +74,7 @@
                 "value": 0.95
               },
               {
-                "color": "green",
+                "color": "semi-dark-green",
                 "value": 1
               }
             ]
@@ -98,10 +100,9 @@
           "values": true
         },
         "showThresholdLabels": false,
-        "showThresholdMarkers": true,
-        "text": {}
+        "showThresholdMarkers": true
       },
-      "pluginVersion": "9.1.7",
+      "pluginVersion": "9.2.0",
       "targets": [
         {
           "columns": [
@@ -120,11 +121,18 @@
             "type": "yesoreyeram-infinity-datasource",
             "uid": "tN8a1FSVk"
           },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "uptime < 0.99",
           "filters": [],
-          "format": "table",
+          "format": "time_series",
           "global_query_id": "",
           "hide": false,
+          "instant": true,
+          "interval": "",
+          "legendFormat": "{{nodeID}}",
           "parser": "backend",
+          "range": false,
           "refId": "A",
           "root_selector": "result.validators",
           "source": "url",
@@ -152,39 +160,8 @@
           }
         }
       ],
-      "title": "Uptime <= 99%",
-      "transformations": [
-        {
-          "id": "filterByValue",
-          "options": {
-            "filters": [
-              {
-                "config": {
-                  "id": "lowerOrEqual",
-                  "options": {
-                    "value": 0.99
-                  }
-                },
-                "fieldName": "Uptime"
-              }
-            ],
-            "match": "all",
-            "type": "include"
-          }
-        },
-        {
-          "id": "sortBy",
-          "options": {
-            "fields": {},
-            "sort": [
-              {
-                "desc": false,
-                "field": "Uptime"
-              }
-            ]
-          }
-        }
-      ],
+      "title": "Uptime < 99%",
+      "transformations": [],
       "type": "gauge"
     },
     {

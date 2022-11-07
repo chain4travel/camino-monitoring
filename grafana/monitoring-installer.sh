@@ -326,7 +326,7 @@ install_dashboards() {
   wget -nd -m -nv https://raw.githubusercontent.com/chain4travel/camino-monitoring/main/grafana/contact-points/email.yaml
 
   sed -i "s/EMAIL_ADDRESS/$1/g" email.yaml
-  sed -i "s/DISCORD_WEBHOOK_URL/$2/g" discord.yaml
+  sed -i "s/DISCORD_WEBHOOK_URL/${2//\//\\/}/g" discord.yaml
 
   sudo mkdir -p /etc/grafana/provisioning/alerting
   sudo cp *.yaml /etc/grafana/provisioning/alerting
@@ -555,7 +555,7 @@ if [ $# -ne 0 ]; then #arguments check
       usage
       exit 1
     fi
-    install_push_daemon PUSH_GATEWAY_DEFAULT_URL_PORT $3
+    install_push_daemon $PUSH_GATEWAY_DEFAULT_URL_PORT $2
     exit 0
     ;;
   --help)
