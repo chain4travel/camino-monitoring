@@ -112,14 +112,14 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "round(increase(camino_X_vtx_accepted_count{job=~\"validator-node.*\"}[1m]))>0",
+          "expr": "round(increase(camino_X_vtx_accepted_count{job=~\"$validator_job_prefix\"}[1m]))>0",
           "interval": "",
           "legendFormat": "{{company}}[Accepted]",
           "refId": "A"
         },
         {
           "exemplar": true,
-          "expr": "round(increase(camino_X_vtx_rejected_count{job=~\"validator-node.*\"}[1m]))>0",
+          "expr": "round(increase(camino_X_vtx_rejected_count{job=~\"$validator_job_prefix\"}[1m]))>0",
           "hide": true,
           "interval": "",
           "legendFormat": "{{company}}[Rejected]",
@@ -206,13 +206,13 @@
       "pluginVersion": "8.0.4",
       "targets": [
         {
-          "expr": "rate(camino_X_vtx_accepted_sum{job=~\"validator-node.*\"}[5m]) / rate(camino_X_vtx_accepted_count{job=~\"validator-node.*\"}[5m])",
+          "expr": "rate(camino_X_vtx_accepted_sum{job=~\"$validator_job_prefix\"}[5m]) / rate(camino_X_vtx_accepted_count{job=~\"$validator_job_prefix\"}[5m])",
           "interval": "",
           "legendFormat": "{{company}}[Accepted]",
           "refId": "A"
         },
         {
-          "expr": "rate(camino_X_vtx_rejected_sum{job=~\"validator-node.*\"}[5m]) / rate(camino_X_vtx_rejected_count{job=~\"validator-node.*\"}[5m])",
+          "expr": "rate(camino_X_vtx_rejected_sum{job=~\"$validator_job_prefix\"}[5m]) / rate(camino_X_vtx_rejected_count{job=~\"$validator_job_prefix\"}[5m])",
           "hide": false,
           "interval": "",
           "legendFormat": "{{company}}[Rejected]",
@@ -300,7 +300,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "camino_X_txs_processing{job=~\"validator-node.*\"}>0",
+          "expr": "camino_X_txs_processing{job=~\"$validator_job_prefix\"}>0",
           "hide": false,
           "interval": "",
           "legendFormat": "{{company}}-Transactions",
@@ -308,7 +308,7 @@
         },
         {
           "exemplar": true,
-          "expr": "camino_X_vtx_processing{job=~\"validator-node.*\"}>0",
+          "expr": "camino_X_vtx_processing{job=~\"$validator_job_prefix\"}>0",
           "hide": false,
           "interval": "",
           "legendFormat": "{{company}}-Vertices",
@@ -400,7 +400,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "(increase(camino_X_handler_chits_count{job=~\"validator-node.*\"}[5m]) + 1) / (increase(camino_X_handler_chits_count{job=~\"validator-node.*\"}[5m]) + increase(camino_X_handler_query_failed_count{job=~\"validator-node.*\"}[5m]) + 1)",
+          "expr": "(increase(camino_X_handler_chits_count{job=~\"$validator_job_prefix\"}[5m]) + 1) / (increase(camino_X_handler_chits_count{job=~\"$validator_job_prefix\"}[5m]) + increase(camino_X_handler_query_failed_count{job=~\"$validator_job_prefix\"}[5m]) + 1)",
           "instant": false,
           "interval": "",
           "legendFormat": "{{company}}",
@@ -490,91 +490,91 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "rate(camino_X_handler_pull_query_sum{job=~\"validator-node.*\"}[5m])",
+          "expr": "rate(camino_X_handler_pull_query_sum{job=~\"$validator_job_prefix\"}[5m])",
           "interval": "",
           "legendFormat": "pull query",
           "refId": "A"
         },
         {
           "exemplar": true,
-          "expr": "rate(camino_X_handler_push_query_sum{job=~\"validator-node.*\"}[5m])",
+          "expr": "rate(camino_X_handler_push_query_sum{job=~\"$validator_job_prefix\"}[5m])",
           "interval": "",
           "legendFormat": "push query",
           "refId": "B"
         },
         {
           "exemplar": true,
-          "expr": "rate(camino_X_handler_chits_sum{job=~\"validator-node.*\"}[5m])",
+          "expr": "rate(camino_X_handler_chits_sum{job=~\"$validator_job_prefix\"}[5m])",
           "interval": "",
           "legendFormat": "chits",
           "refId": "C"
         },
         {
           "exemplar": true,
-          "expr": "rate(camino_X_handler_accepted_sum{job=~\"validator-node.*\"}[5m])",
+          "expr": "rate(camino_X_handler_accepted_sum{job=~\"$validator_job_prefix\"}[5m])",
           "interval": "",
           "legendFormat": "accepted",
           "refId": "D"
         },
         {
           "exemplar": true,
-          "expr": "rate(camino_X_handler_get_sum{job=~\"validator-node.*\"}[5m])",
+          "expr": "rate(camino_X_handler_get_sum{job=~\"$validator_job_prefix\"}[5m])",
           "interval": "",
           "legendFormat": "get",
           "refId": "E"
         },
         {
           "exemplar": true,
-          "expr": "rate(camino_X_handler_put_sum{job=~\"validator-node.*\"}[5m])",
+          "expr": "rate(camino_X_handler_put_sum{job=~\"$validator_job_prefix\"}[5m])",
           "interval": "",
           "legendFormat": "put",
           "refId": "F"
         },
         {
           "exemplar": true,
-          "expr": "rate(camino_X_handler_multiput_sum{job=~\"validator-node.*\"}[5m])",
+          "expr": "rate(camino_X_handler_multiput_sum{job=~\"$validator_job_prefix\"}[5m])",
           "interval": "",
           "legendFormat": "multiput",
           "refId": "G"
         },
         {
           "exemplar": true,
-          "expr": "rate(camino_X_handler_get_ancestors_sum{job=~\"validator-node.*\"}[5m])",
+          "expr": "rate(camino_X_handler_get_ancestors_sum{job=~\"$validator_job_prefix\"}[5m])",
           "interval": "",
           "legendFormat": "get ancestors",
           "refId": "H"
         },
         {
           "exemplar": true,
-          "expr": "rate(camino_X_handler_get_failed_sum{job=~\"validator-node.*\"}[5m])",
+          "expr": "rate(camino_X_handler_get_failed_sum{job=~\"$validator_job_prefix\"}[5m])",
           "interval": "",
           "legendFormat": "get failed",
           "refId": "I"
         },
         {
           "exemplar": true,
-          "expr": "rate(camino_X_handler_query_failed_sum{job=~\"validator-node.*\"}[5m])",
+          "expr": "rate(camino_X_handler_query_failed_sum{job=~\"$validator_job_prefix\"}[5m])",
           "interval": "",
           "legendFormat": "query failed",
           "refId": "J"
         },
         {
           "exemplar": true,
-          "expr": "rate(camino_X_handler_get_accepted_sum{job=~\"validator-node.*\"}[5m])",
+          "expr": "rate(camino_X_handler_get_accepted_sum{job=~\"$validator_job_prefix\"}[5m])",
           "interval": "",
           "legendFormat": "get accepted",
           "refId": "K"
         },
         {
           "exemplar": true,
-          "expr": "rate(camino_X_handler_get_ancestors_failed_sum{job=~\"validator-node.*\"}[5m])",
+          "expr": "rate(camino_X_handler_get_ancestors_failed_sum{job=~\"$validator_job_prefix\"}[5m])",
           "interval": "",
           "legendFormat": "get ancestors failed",
           "refId": "L"
         },
         {
           "exemplar": true,
-          "expr": "rate(camino_X_handler_app_request_sum{job=~\"validator-node.*\"}[5m])",
+          "expr": "rate(camino_X_handler_app_request_sum{job=~\"$validator_job_prefix\"}[5m])",
           "hide": false,
           "interval": "",
           "legendFormat": "app request",
@@ -582,7 +582,7 @@
         },
         {
           "exemplar": true,
-          "expr": "rate(camino_X_handler_app_request_failed_sum{job=~\"validator-node.*\"}[5m])",
+          "expr": "rate(camino_X_handler_app_request_failed_sum{job=~\"$validator_job_prefix\"}[5m])",
           "hide": false,
           "interval": "",
           "legendFormat": "app request failed",
@@ -590,7 +590,7 @@
         },
         {
           "exemplar": true,
-          "expr": "rate(camino_X_handler_app_response_sum{job=~\"validator-node.*\"}[5m])",
+          "expr": "rate(camino_X_handler_app_response_sum{job=~\"$validator_job_prefix\"}[5m])",
           "hide": false,
           "interval": "",
           "legendFormat": "app response",
@@ -598,7 +598,7 @@
         },
         {
           "exemplar": true,
-          "expr": "rate(camino_X_handler_app_gossip_sum{job=~\"validator-node.*\"}[5m])",
+          "expr": "rate(camino_X_handler_app_gossip_sum{job=~\"$validator_job_prefix\"}[5m])",
           "hide": false,
           "interval": "",
           "legendFormat": "app gossip",
@@ -688,91 +688,91 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "rate(camino_X_handler_pull_query_sum{job=~\"validator-node.*\"}[5m])/rate(camino_X_handler_pull_query_count{job=~\"validator-node.*\"}[5m])",
+          "expr": "rate(camino_X_handler_pull_query_sum{job=~\"$validator_job_prefix\"}[5m])/rate(camino_X_handler_pull_query_count{job=~\"$validator_job_prefix\"}[5m])",
           "interval": "",
           "legendFormat": "pull query",
           "refId": "A"
         },
         {
           "exemplar": true,
-          "expr": "rate(camino_X_handler_push_query_sum{job=~\"validator-node.*\"}[5m])/rate(camino_X_handler_push_query_count{job=~\"validator-node.*\"}[5m])",
+          "expr": "rate(camino_X_handler_push_query_sum{job=~\"$validator_job_prefix\"}[5m])/rate(camino_X_handler_push_query_count{job=~\"$validator_job_prefix\"}[5m])",
           "interval": "",
           "legendFormat": "push query",
           "refId": "B"
         },
         {
           "exemplar": true,
-          "expr": "rate(camino_X_handler_chits_sum{job=~\"validator-node.*\"}[5m])/rate(camino_X_handler_chits_count{job=~\"validator-node.*\"}[5m])",
+          "expr": "rate(camino_X_handler_chits_sum{job=~\"$validator_job_prefix\"}[5m])/rate(camino_X_handler_chits_count{job=~\"$validator_job_prefix\"}[5m])",
           "interval": "",
           "legendFormat": "chits",
           "refId": "C"
         },
         {
           "exemplar": true,
-          "expr": "rate(camino_X_handler_accepted_sum{job=~\"validator-node.*\"}[5m])/rate(camino_X_handler_accepted_count{job=~\"validator-node.*\"}[5m])",
+          "expr": "rate(camino_X_handler_accepted_sum{job=~\"$validator_job_prefix\"}[5m])/rate(camino_X_handler_accepted_count{job=~\"$validator_job_prefix\"}[5m])",
           "interval": "",
           "legendFormat": "accepted",
           "refId": "D"
         },
         {
           "exemplar": true,
-          "expr": "rate(camino_X_handler_get_sum{job=~\"validator-node.*\"}[5m])/rate(camino_X_handler_get_count{job=~\"validator-node.*\"}[5m])",
+          "expr": "rate(camino_X_handler_get_sum{job=~\"$validator_job_prefix\"}[5m])/rate(camino_X_handler_get_count{job=~\"$validator_job_prefix\"}[5m])",
           "interval": "",
           "legendFormat": "get",
           "refId": "E"
         },
         {
           "exemplar": true,
-          "expr": "rate(camino_X_handler_put_sum{job=~\"validator-node.*\"}[5m])/rate(camino_X_handler_put_count{job=~\"validator-node.*\"}[5m])",
+          "expr": "rate(camino_X_handler_put_sum{job=~\"$validator_job_prefix\"}[5m])/rate(camino_X_handler_put_count{job=~\"$validator_job_prefix\"}[5m])",
           "interval": "",
           "legendFormat": "put",
           "refId": "F"
         },
         {
           "exemplar": true,
-          "expr": "rate(camino_X_handler_multiput_sum{job=~\"validator-node.*\"}[5m])/rate(camino_X_handler_multi_put_count{job=~\"validator-node.*\"}[5m])",
+          "expr": "rate(camino_X_handler_multiput_sum{job=~\"$validator_job_prefix\"}[5m])/rate(camino_X_handler_multi_put_count{job=~\"$validator_job_prefix\"}[5m])",
           "interval": "",
           "legendFormat": "multiput",
           "refId": "G"
         },
         {
           "exemplar": true,
-          "expr": "rate(camino_X_handler_get_ancestors_sum{job=~\"validator-node.*\"}[5m])/rate(camino_X_handler_get_ancestors_count{job=~\"validator-node.*\"}[5m])",
+          "expr": "rate(camino_X_handler_get_ancestors_sum{job=~\"$validator_job_prefix\"}[5m])/rate(camino_X_handler_get_ancestors_count{job=~\"$validator_job_prefix\"}[5m])",
           "interval": "",
           "legendFormat": "get ancestors",
           "refId": "H"
         },
         {
           "exemplar": true,
-          "expr": "rate(camino_X_handler_get_failed_sum{job=~\"validator-node.*\"}[5m])/rate(camino_X_handler_get_failed_count{job=~\"validator-node.*\"}[5m])",
+          "expr": "rate(camino_X_handler_get_failed_sum{job=~\"$validator_job_prefix\"}[5m])/rate(camino_X_handler_get_failed_count{job=~\"$validator_job_prefix\"}[5m])",
           "interval": "",
           "legendFormat": "get failed",
           "refId": "I"
         },
         {
           "exemplar": true,
-          "expr": "rate(camino_X_handler_query_failed_sum{job=~\"validator-node.*\"}[5m])/rate(camino_X_handler_query_failed_count{job=~\"validator-node.*\"}[5m])",
+          "expr": "rate(camino_X_handler_query_failed_sum{job=~\"$validator_job_prefix\"}[5m])/rate(camino_X_handler_query_failed_count{job=~\"$validator_job_prefix\"}[5m])",
           "interval": "",
           "legendFormat": "query failed",
           "refId": "J"
         },
         {
           "exemplar": true,
-          "expr": "rate(camino_X_handler_get_accepted_sum{job=~\"validator-node.*\"}[5m])/rate(camino_X_handler_get_accepted_count{job=~\"validator-node.*\"}[5m])",
+          "expr": "rate(camino_X_handler_get_accepted_sum{job=~\"$validator_job_prefix\"}[5m])/rate(camino_X_handler_get_accepted_count{job=~\"$validator_job_prefix\"}[5m])",
           "interval": "",
           "legendFormat": "get accepted",
           "refId": "K"
         },
         {
           "exemplar": true,
-          "expr": "rate(camino_X_handler_get_ancestors_failed_sum{job=~\"validator-node.*\"}[5m])/rate(camino_X_handler_get_ancestors_failed_count{job=~\"validator-node.*\"}[5m])",
+          "expr": "rate(camino_X_handler_get_ancestors_failed_sum{job=~\"$validator_job_prefix\"}[5m])/rate(camino_X_handler_get_ancestors_failed_count{job=~\"$validator_job_prefix\"}[5m])",
           "interval": "",
           "legendFormat": "get ancestors failed",
           "refId": "L"
         },
         {
           "exemplar": true,
-          "expr": "rate(camino_X_handler_app_request_sum{job=~\"validator-node.*\"}[5m])/rate(camino_X_handler_app_request_count{job=~\"validator-node.*\"}[5m])",
+          "expr": "rate(camino_X_handler_app_request_sum{job=~\"$validator_job_prefix\"}[5m])/rate(camino_X_handler_app_request_count{job=~\"$validator_job_prefix\"}[5m])",
           "hide": false,
           "interval": "",
           "legendFormat": "app request",
@@ -780,7 +780,7 @@
         },
         {
           "exemplar": true,
-          "expr": "rate(camino_X_handler_app_request_failed_sum{job=~\"validator-node.*\"}[5m])/rate(camino_X_handler_app_request_failed_count{job=~\"validator-node.*\"}[5m])",
+          "expr": "rate(camino_X_handler_app_request_failed_sum{job=~\"$validator_job_prefix\"}[5m])/rate(camino_X_handler_app_request_failed_count{job=~\"$validator_job_prefix\"}[5m])",
           "hide": false,
           "interval": "",
           "legendFormat": "app request failed",
@@ -788,7 +788,7 @@
         },
         {
           "exemplar": true,
-          "expr": "rate(camino_X_handler_app_gossip_sum{job=~\"validator-node.*\"}[5m])/rate(camino_X_handler_app_gossip_count{job=~\"validator-node.*\"}[5m])",
+          "expr": "rate(camino_X_handler_app_gossip_sum{job=~\"$validator_job_prefix\"}[5m])/rate(camino_X_handler_app_gossip_count{job=~\"$validator_job_prefix\"}[5m])",
           "hide": false,
           "interval": "",
           "legendFormat": "app gossip",
@@ -796,7 +796,7 @@
         },
         {
           "exemplar": true,
-          "expr": "rate(camino_X_handler_app_response_sum{job=~\"validator-node.*\"}[5m])/rate(camino_X_handler_app_response_count{job=~\"validator-node.*\"}[5m])",
+          "expr": "rate(camino_X_handler_app_response_sum{job=~\"$validator_job_prefix\"}[5m])/rate(camino_X_handler_app_response_count{job=~\"$validator_job_prefix\"}[5m])",
           "hide": false,
           "interval": "",
           "legendFormat": "app response",
@@ -886,91 +886,91 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "rate(camino_X_handler_pull_query_count{job=~\"validator-node.*\"}[5m])",
+          "expr": "rate(camino_X_handler_pull_query_count{job=~\"$validator_job_prefix\"}[5m])",
           "interval": "",
           "legendFormat": "pull query",
           "refId": "A"
         },
         {
           "exemplar": true,
-          "expr": "rate(camino_X_handler_push_query_count{job=~\"validator-node.*\"}[5m])",
+          "expr": "rate(camino_X_handler_push_query_count{job=~\"$validator_job_prefix\"}[5m])",
           "interval": "",
           "legendFormat": "push query",
           "refId": "B"
         },
         {
           "exemplar": true,
-          "expr": "rate(camino_X_handler_chits_count{job=~\"validator-node.*\"}[5m])",
+          "expr": "rate(camino_X_handler_chits_count{job=~\"$validator_job_prefix\"}[5m])",
           "interval": "",
           "legendFormat": "chits",
           "refId": "C"
         },
         {
           "exemplar": true,
-          "expr": "rate(camino_X_handler_accepted_count{job=~\"validator-node.*\"}[5m])",
+          "expr": "rate(camino_X_handler_accepted_count{job=~\"$validator_job_prefix\"}[5m])",
           "interval": "",
           "legendFormat": "accepted",
           "refId": "D"
         },
         {
           "exemplar": true,
-          "expr": "rate(camino_X_handler_get_count{job=~\"validator-node.*\"}[5m])",
+          "expr": "rate(camino_X_handler_get_count{job=~\"$validator_job_prefix\"}[5m])",
           "interval": "",
           "legendFormat": "get",
           "refId": "E"
         },
         {
           "exemplar": true,
-          "expr": "rate(camino_X_handler_put_count{job=~\"validator-node.*\"}[5m])",
+          "expr": "rate(camino_X_handler_put_count{job=~\"$validator_job_prefix\"}[5m])",
           "interval": "",
           "legendFormat": "put",
           "refId": "F"
         },
         {
           "exemplar": true,
-          "expr": "rate(camino_X_handler_multi_put_count{job=~\"validator-node.*\"}[5m])",
+          "expr": "rate(camino_X_handler_multi_put_count{job=~\"$validator_job_prefix\"}[5m])",
           "interval": "",
           "legendFormat": "multiput",
           "refId": "G"
         },
         {
           "exemplar": true,
-          "expr": "rate(camino_X_handler_get_ancestors_count{job=~\"validator-node.*\"}[5m])",
+          "expr": "rate(camino_X_handler_get_ancestors_count{job=~\"$validator_job_prefix\"}[5m])",
           "interval": "",
           "legendFormat": "get ancestors",
           "refId": "H"
         },
         {
           "exemplar": true,
-          "expr": "rate(camino_X_handler_get_failed_count{job=~\"validator-node.*\"}[5m])",
+          "expr": "rate(camino_X_handler_get_failed_count{job=~\"$validator_job_prefix\"}[5m])",
           "interval": "",
           "legendFormat": "get failed",
           "refId": "I"
         },
         {
           "exemplar": true,
-          "expr": "rate(camino_X_handler_query_failed_count{job=~\"validator-node.*\"}[5m])",
+          "expr": "rate(camino_X_handler_query_failed_count{job=~\"$validator_job_prefix\"}[5m])",
           "interval": "",
           "legendFormat": "query failed",
           "refId": "J"
         },
         {
           "exemplar": true,
-          "expr": "rate(camino_X_handler_get_accepted_count{job=~\"validator-node.*\"}[5m])",
+          "expr": "rate(camino_X_handler_get_accepted_count{job=~\"$validator_job_prefix\"}[5m])",
           "interval": "",
           "legendFormat": "get accepted",
           "refId": "K"
         },
         {
           "exemplar": true,
-          "expr": "rate(camino_X_handler_get_ancestors_failed_count{job=~\"validator-node.*\"}[5m])",
+          "expr": "rate(camino_X_handler_get_ancestors_failed_count{job=~\"$validator_job_prefix\"}[5m])",
           "interval": "",
           "legendFormat": "get ancestors failed",
           "refId": "L"
         },
         {
           "exemplar": true,
-          "expr": "rate(camino_X_handler_chits_count{job=~\"validator-node.*\"}[5m])",
+          "expr": "rate(camino_X_handler_chits_count{job=~\"$validator_job_prefix\"}[5m])",
           "hide": false,
           "interval": "",
           "legendFormat": "chits",
@@ -978,7 +978,7 @@
         },
         {
           "exemplar": true,
-          "expr": "rate(camino_X_handler_app_request_count{job=~\"validator-node.*\"}[5m])",
+          "expr": "rate(camino_X_handler_app_request_count{job=~\"$validator_job_prefix\"}[5m])",
           "hide": false,
           "interval": "",
           "legendFormat": "app request",
@@ -986,7 +986,7 @@
         },
         {
           "exemplar": true,
-          "expr": "rate(camino_X_handler_app_request_failed_count{job=~\"validator-node.*\"}[5m])",
+          "expr": "rate(camino_X_handler_app_request_failed_count{job=~\"$validator_job_prefix\"}[5m])",
           "hide": false,
           "interval": "",
           "legendFormat": "app request failed",
@@ -994,7 +994,7 @@
         },
         {
           "exemplar": true,
-          "expr": "rate(camino_X_handler_app_response_count{job=~\"validator-node.*\"}[5m])",
+          "expr": "rate(camino_X_handler_app_response_count{job=~\"$validator_job_prefix\"}[5m])",
           "hide": false,
           "interval": "",
           "legendFormat": "app response",
@@ -1002,7 +1002,7 @@
         },
         {
           "exemplar": true,
-          "expr": "rate(camino_X_handler_app_gossip_count{job=~\"validator-node.*\"}[5m])",
+          "expr": "rate(camino_X_handler_app_gossip_count{job=~\"$validator_job_prefix\"}[5m])",
           "hide": false,
           "interval": "",
           "legendFormat": "app gossip",
@@ -1281,7 +1281,29 @@
     "Camino"
   ],
   "templating": {
-    "list": []
+    "list": [
+      {
+        "current": {
+          "selected": false,
+          "text": "validator-node-.*",
+          "value": "validator-node-.*"
+        },
+        "description": "Job prefix common for all validators nodes |  Example validator-node.*",
+        "hide": 0,
+        "label": "Validators Job Prefix",
+        "name": "validator_job_prefix",
+        "options": [
+          {
+            "selected": false,
+            "text": "validator-node-.*",
+            "value": "validator-node-.*"
+          }
+        ],
+        "query": "validator-node-.*",
+        "skipUrlSync": false,
+        "type": "textbox"
+      }
+    ]
   },
   "time": {
     "from": "now-24h",

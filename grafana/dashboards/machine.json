@@ -791,7 +791,7 @@
             "type": "prometheus"
           },
           "editorMode": "code",
-          "expr": "camino_go_goroutines{job=~\"validator-node.*\"}",
+          "expr": "camino_go_goroutines{job=~\"$validator_job_prefix\"}",
           "interval": "",
           "legendFormat": "goroutines",
           "range": true,
@@ -880,7 +880,7 @@
             "type": "prometheus"
           },
           "editorMode": "code",
-          "expr": "camino_process_open_fds{job=~\"validator-node.*\"}",
+          "expr": "camino_process_open_fds{job=~\"$validator_job_prefix\"}",
           "legendFormat": "Open files",
           "range": true,
           "refId": "A"
@@ -891,7 +891,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "camino_process_max_fds{job=~\"validator-node.*\"}",
+          "expr": "camino_process_max_fds{job=~\"$validator_job_prefix\"}",
           "hide": false,
           "instant": false,
           "legendFormat": "Max number allowed",
@@ -910,7 +910,29 @@
     "Camino"
   ],
   "templating": {
-    "list": []
+    "list": [
+      {
+        "current": {
+          "selected": false,
+          "text": "validator-node-.*",
+          "value": "validator-node-.*"
+        },
+        "description": "Job prefix common for all validators nodes |  Example validator-node.*",
+        "hide": 0,
+        "label": "Validators Job Prefix",
+        "name": "validator_job_prefix",
+        "options": [
+          {
+            "selected": false,
+            "text": "validator-node-.*",
+            "value": "validator-node-.*"
+          }
+        ],
+        "query": "validator-node-.*",
+        "skipUrlSync": false,
+        "type": "textbox"
+      }
+    ]
   },
   "time": {
     "from": "now-1h",

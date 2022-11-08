@@ -30,7 +30,7 @@ groups:
             datasourceUid: PBFA97CFB590B2093
             model:
               editorMode: code
-              expression: 'avg(rate(camino_C_blks_accepted_sum{job=~"validator-node.*"}[5m]) / rate(camino_C_blks_accepted_count{job=~"validator-node.*"}[5m]) / 1000000)'
+              expression: 'avg(rate(camino_C_blks_accepted_sum{job=~"$validator_job_prefix"}[5m]) / rate(camino_C_blks_accepted_count{job=~"$validator_job_prefix"}[5m]) / 1000000)'
               intervalMs: 1000
               maxDataPoints: 43200
               legendFormat: __auto
