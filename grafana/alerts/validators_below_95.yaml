@@ -1,26 +1,14 @@
-# config file version
 apiVersion: 1
 
-# List of rule groups to import or update
 groups:
-  # <int> organization ID, default = 1
   - orgId: 1
-    # <string, required> name of the rule group
     name: network-health
-    # <string, required> name of the folder the rule group will be stored in
     folder: alerts
-    # <duration, required> interval that the rule group should evaluated at
     interval: 60s
-    # <list, required> list of rules that are part of the rule group
     rules:
-      # <string, required> unique identifier for the rule
-      - uid: 3
-        # <string, required> title of the rule that will be displayed in the UI
+      - uid: 4
         title: Connected Validator Nodes below 95%
-        # <string, required> which query should be used for the condition
         condition: B
-        # <list, required> list of query objects that should be executed on each
-        #                  evaluation - should be obtained trough the API
         data:
           - refId: A
             queryType: ''
@@ -30,7 +18,7 @@ groups:
             datasourceUid: PBFA97CFB590B2093
             model:
               editorMode: code
-              expression: 'ping_validator_status{instance=\"push_daemon\",job=\"validators_status\"} * (connected{instance=\"push_daemon\",job=\"validators_status\"} / (connected{instance=\"push_daemon\",job=\"validators_status\"} + disconnected{instance=\"push_daemon\",job=\"validators_status\"}))"'
+              expr: 'ping_validator_status{instance="push_daemon",job="validators_status"} * (connected{instance="push_daemon",job="validators_status"} / (connected{instance="push_daemon",job="validators_status"} + disconnected{instance="push_daemon",job="validators_status"}))'
               intervalMs: 1000
               maxDataPoints: 43200
               legendFormat: __auto
@@ -64,17 +52,8 @@ groups:
               maxDataPoints: 43200
               refId: B
               type: classic_conditions
-        # <string> UID of a dashboard that the alert rule should be linked to
         dashboardUid: camino-main-dashboard
-        # <int> ID of the panel that the alert rule should be linked to
         panelId: 37
-        # <string> the state the alert rule will have when no data is returned
-        #          possible values: "NoData", "Alerting", "OK", default = NoData
-        noDataState: NoData
-        # <string> the state the alert rule will have when the query execution
-        #          failed - possible values: "Error", "Alerting", "OK"
-        #          default = Alerting
-        # <duration, required> for how long should the alert fire before alerting
         for: 1m30s
         annotations:
           severity: medium

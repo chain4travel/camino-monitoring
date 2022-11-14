@@ -338,7 +338,7 @@ install_dashboards() {
       echo "apiVersion: 1"
       echo ""
       echo "providers:"
-      echo "  - name: 'Avalanche official'"
+      echo "  - name: 'Camino official'"
       echo "    orgId: 1"
       echo "    folder: ''"
       echo "    folderUid: ''"

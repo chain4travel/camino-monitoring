@@ -1,26 +1,14 @@
-# config file version
 apiVersion: 1
 
-# List of rule groups to import or update
 groups:
-  # <int> organization ID, default = 1
   - orgId: 1
-    # <string, required> name of the rule group
     name: network-stability
-    # <string, required> name of the folder the rule group will be stored in
     folder: alerts
-    # <duration, required> interval that the rule group should evaluated at
     interval: 60s
-    # <list, required> list of rules that are part of the rule group
     rules:
-      # <string, required> unique identifier for the rule
       - uid: 2
-        # <string, required> title of the rule that will be displayed in the UI
         title: C Block Acceptance Latency above 2s
-        # <string, required> which query should be used for the condition
         condition: B
-        # <list, required> list of query objects that should be executed on each
-        #                  evaluation - should be obtained trough the API
         data:
           - refId: A
             queryType: ''
@@ -30,7 +18,7 @@ groups:
             datasourceUid: PBFA97CFB590B2093
             model:
               editorMode: code
-              expression: 'avg(rate(camino_C_blks_accepted_sum{job=~"$validator_job_prefix"}[5m]) / rate(camino_C_blks_accepted_count{job=~"$validator_job_prefix"}[5m]) / 1000000)'
+              expr: 'avg(rate(camino_C_blks_accepted_sum{job=~"validator-node.*"}[5m]) / rate(camino_C_blks_accepted_count{job=~"validator-node.*"}[5m]) / 1000000)'
               intervalMs: 1000
               maxDataPoints: 43200
               legendFormat: __auto
@@ -65,7 +53,6 @@ groups:
               maxDataPoints: 43200
               refId: B
               type: classic_conditions
-        noDataState: NoData
         for: 3m
         annotations:
           summary: Average of all validator avg C Block acceptance latency in the last 5m
