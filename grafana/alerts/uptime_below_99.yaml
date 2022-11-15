@@ -2,12 +2,12 @@ apiVersion: 1
 
 groups:
   - orgId: 1
-    name: network-health
+    name: network-stability
     folder: alerts
     interval: 60s
     rules:
-      - uid: 4
-        title: Connected Validator Nodes below 95%
+      - uid: 5
+        title: Uptime below 99%
         condition: B
         data:
           - refId: A
@@ -18,45 +18,51 @@ groups:
             datasourceUid: PBFA97CFB590B2093
             model:
               editorMode: code
-              expr: 'ping_validator_status{instance="push_daemon",job="validators_status"} * (connected{instance="push_daemon",job="validators_status"} / (connected{instance="push_daemon",job="validators_status"} + disconnected{instance="push_daemon",job="validators_status"}))'
+              expr: uptime < 0.99
+              hide: false
               intervalMs: 1000
-              maxDataPoints: 43200
               legendFormat: __auto
+              maxDataPoints: 43200
               range: true
               refId: A
           - refId: B
             queryType: ''
             relativeTimeRange:
-              from: 0
+              from: 600
               to: 0
             datasourceUid: -100
             model:
               conditions:
                 - evaluator:
                     params:
-                      - 0.95
-                    type: lt
+                      - 0
+                      - 0
+                    type: gt
                   operator:
                     type: and
                   query:
                     params:
                       - A
                   reducer:
-                    type: last
+                    params: [ ]
+                    type: avg
                   type: query
               datasource:
                 type: __expr__
-                uid: '-100'
+                uid: __expr__
+              downsampler: mean
               expression: A
+              hide: false
               intervalMs: 1000
               maxDataPoints: 43200
+              reducer: last
               refId: B
-              type: classic_conditions
-        for: 1m30s
+              type: reduce
+              upsampler: fillna
+        for: 5m
         annotations:
-          "__dashboardUid__": "kBQpRdWnk"
-          "__panelId__": "37"
-          severity: medium
+          __dashboardUid__: kBQpRdWnk
+          __panelId__: '46'
         labels:
           env: testnet
-          channel: teams
+          severity: high

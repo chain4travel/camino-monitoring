@@ -55,6 +55,8 @@ groups:
               type: classic_conditions
         for: 3m
         annotations:
+          "__dashboardUid__": "kBQpRdWnk"
+          "__panelId__": "23"
           summary: Average of all validator avg C Block acceptance latency in the last 5m
         labels:
           env: testnet
