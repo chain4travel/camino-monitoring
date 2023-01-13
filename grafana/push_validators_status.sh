@@ -26,6 +26,10 @@ extract_metric_connected() {
     sed 's/false/disconnected/' |
     xargs -n 2 echo |
     awk '{ for (i=NF; i>1; i--) printf("%s ",$i); print $1"\\n";}')
+
+  if [[ ! $metric_connected =~ "disconnected" ]]; then
+    metric_connected+="disconnected 0"
+  fi
 }
 extract_metric_uptime() {
   metric_uptime=$(echo $response | sed "s/$status_code//g"|
@@ -49,7 +53,6 @@ elif [[ $# -eq 3 ]] && [ "$3" = "cleanup" ]; then
   cleanup
   exit 1
 fi
-
 while true; do
   if query_validators_status; then
     echo "ping_validator_status 1" | curl --data-binary @- ${PUSH_GATEWAY_URL_PORT}/metrics/job/validators_status/instance/push_daemon
