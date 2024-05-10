@@ -512,6 +512,35 @@ install_push_daemon() {
   sudo systemctl daemon-reload
   sudo systemctl start push_validators_status_exporter
   sudo systemctl enable push_validators_status_exporter
+
+  wget -nd -m -nv https://raw.githubusercontent.com/chain4travel/camino-monitoring/main/grafana/push_health_status.sh
+  chmod +x push_health_status.sh
+  sudo mv push_health_status.sh /usr/local/bin/
+  echo "Creating service..."
+
+  {
+    echo "[Unit]"
+    echo "Description=Push health status exporter"
+    echo "Wants=network-online.target"
+    echo "After=network-online.target"
+    echo ""
+    echo "[Service]"
+    echo "Type=simple"
+    echo "User=prometheus"
+    echo "Group=prometheus"
+    echo "ExecReload=/bin/kill -HUP \$MAINPID"
+    echo "ExecStart=/usr/local/bin/push_health_status.sh ${1} ${2}"
+    echo "ExecStop=/usr/local/bin/push_health_status.sh ${1} ${2} cleanup"
+    echo ""
+    echo "[Install]"
+    echo "WantedBy=multi-user.target"
+  } >>push_health_status_exporter.service
+  sudo mv push_health_status_exporter.service /etc/systemd/system/
+  cd /etc/systemd/system/
+  sudo systemctl daemon-reload
+  sudo systemctl start push_health_status_exporter
+  sudo systemctl enable push_health_status_exporter
+  
   rm -rf /tmp/push-daemon
 
   echo
