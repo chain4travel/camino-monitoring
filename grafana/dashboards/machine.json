@@ -914,21 +914,21 @@
       {
         "current": {
           "selected": false,
-          "text": "validator-node-.*",
-          "value": "validator-node-.*"
+          "text": ".*",
+          "value": ".*"
         },
-        "description": "Job prefix common for all validators nodes |  Example validator-node.*",
+        "description": "Job prefix common for all validators nodes |  Example validator-node.* or .* for all",
         "hide": 0,
         "label": "Validators Job Prefix",
         "name": "validator_job_prefix",
         "options": [
           {
             "selected": false,
-            "text": "validator-node-.*",
-            "value": "validator-node-.*"
+            "text": ".*",
+            "value": ".*"
           }
         ],
-        "query": "validator-node-.*",
+        "query": ".*",
         "skipUrlSync": false,
         "type": "textbox"
       }
