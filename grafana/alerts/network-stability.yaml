@@ -1,0 +1,222 @@
+# Network Stability Alerts - Latency and Uptime
+# These alerts monitor C Block acceptance latency and validator uptime
+# The __ENV__ placeholder will be replaced by the installer script
+
+apiVersion: 1
+
+groups:
+  - orgId: 1
+    name: network-stability
+    folder: alerts
+    interval: 1m
+    rules:
+      # C Block Acceptance Latency
+      - uid: c-block-latency-1
+        title: C Block Acceptance Latency above 2s
+        condition: C
+        data:
+          - refId: A
+            queryType: ''
+            relativeTimeRange:
+              from: 600
+              to: 0
+            datasourceUid: PBFA97CFB590B2093
+            model:
+              editorMode: code
+              expr: 'avg(rate(camino_C_blks_accepted_sum[5m]) / rate(camino_C_blks_accepted_count[5m]) / 1000000)'
+              hide: false
+              intervalMs: 1000
+              legendFormat: __auto
+              maxDataPoints: 43200
+              range: true
+              refId: A
+          - refId: B
+            queryType: ''
+            relativeTimeRange:
+              from: 600
+              to: 0
+            datasourceUid: '-100'
+            model:
+              datasource:
+                type: __expr__
+                uid: '-100'
+              expression: A
+              hide: false
+              intervalMs: 1000
+              maxDataPoints: 43200
+              reducer: last
+              refId: B
+              settings:
+                mode: dropNN
+              type: reduce
+          - refId: C
+            queryType: ''
+            relativeTimeRange:
+              from: 600
+              to: 0
+            datasourceUid: '-100'
+            model:
+              conditions:
+                - evaluator:
+                    params:
+                      - 2000
+                    type: gt
+                  operator:
+                    type: and
+                  query:
+                    params:
+                      - C
+                  reducer:
+                    params: []
+                    type: last
+                  type: query
+              datasource:
+                type: __expr__
+                uid: '-100'
+              expression: B
+              hide: false
+              intervalMs: 1000
+              maxDataPoints: 43200
+              refId: C
+              type: threshold
+        for: 3m
+        annotations:
+          __dashboardUid__: kBQpRdWnk
+          __panelId__: '23'
+          summary: Average of all validator avg C Block acceptance latency in the last 5m exceeds 2 seconds
+        labels:
+          env: __ENV__
+          severity: medium
+        noDataState: OK
+        execErrState: OK
+
+      # Uptime below 90%
+      - uid: uptime-below-90
+        title: Uptime below 90%
+        condition: B
+        data:
+          - refId: A
+            queryType: ''
+            relativeTimeRange:
+              from: 600
+              to: 0
+            datasourceUid: PBFA97CFB590B2093
+            model:
+              editorMode: code
+              expr: 'uptime < 0.90'
+              hide: false
+              intervalMs: 1000
+              legendFormat: __auto
+              maxDataPoints: 43200
+              range: true
+              refId: A
+          - refId: B
+            queryType: ''
+            relativeTimeRange:
+              from: 600
+              to: 0
+            datasourceUid: '-100'
+            model:
+              conditions:
+                - evaluator:
+                    params:
+                      - 0
+                      - 0
+                    type: gt
+                  operator:
+                    type: and
+                  query:
+                    params:
+                      - A
+                  reducer:
+                    params: null
+                    type: avg
+                  type: query
+              datasource:
+                type: __expr__
+                uid: __expr__
+              downsampler: mean
+              expression: A
+              hide: false
+              intervalMs: 1000
+              maxDataPoints: 43200
+              reducer: last
+              refId: B
+              type: reduce
+              upsampler: fillna
+        for: 5m
+        annotations:
+          __dashboardUid__: kBQpRdWnk
+          __panelId__: '46'
+          summary: Validator uptime has dropped below 90%
+        labels:
+          env: __ENV__
+          severity: high
+        noDataState: NoData
+        execErrState: Alerting
+
+      # Uptime below 99%
+      - uid: uptime-below-99
+        title: Uptime below 99%
+        condition: B
+        data:
+          - refId: A
+            queryType: ''
+            relativeTimeRange:
+              from: 600
+              to: 0
+            datasourceUid: PBFA97CFB590B2093
+            model:
+              editorMode: code
+              expr: 'uptime < 0.99'
+              hide: false
+              intervalMs: 1000
+              legendFormat: __auto
+              maxDataPoints: 43200
+              range: true
+              refId: A
+          - refId: B
+            queryType: ''
+            relativeTimeRange:
+              from: 600
+              to: 0
+            datasourceUid: '-100'
+            model:
+              conditions:
+                - evaluator:
+                    params:
+                      - 0
+                      - 0
+                    type: gt
+                  operator:
+                    type: and
+                  query:
+                    params:
+                      - A
+                  reducer:
+                    params: null
+                    type: avg
+                  type: query
+              datasource:
+                type: __expr__
+                uid: __expr__
+              downsampler: mean
+              expression: A
+              hide: false
+              intervalMs: 1000
+              maxDataPoints: 43200
+              reducer: last
+              refId: B
+              type: reduce
+              upsampler: fillna
+        for: 5m
+        annotations:
+          __dashboardUid__: kBQpRdWnk
+          __panelId__: '46'
+          summary: Validator uptime has dropped below 99%
+        labels:
+          env: __ENV__
+          severity: medium
+        noDataState: NoData
+        execErrState: Alerting
+

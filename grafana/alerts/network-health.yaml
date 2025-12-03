@@ -1,0 +1,246 @@
+# Network Health Alerts - Validator Connectivity
+# These alerts monitor the percentage of connected validator nodes
+# The __ENV__ placeholder will be replaced by the installer script
+
+apiVersion: 1
+
+groups:
+  - orgId: 1
+    name: network-health
+    folder: alerts
+    interval: 1m
+    rules:
+      # Critical: Below 85%
+      - uid: validators-below-85
+        title: Connected Validator Nodes below 85%
+        condition: C
+        data:
+          - refId: A
+            queryType: ''
+            relativeTimeRange:
+              from: 600
+              to: 0
+            datasourceUid: PBFA97CFB590B2093
+            model:
+              editorMode: code
+              expr: 'ping_validator_status{instance="push_daemon",job="validators_status"} * (connected{instance="push_daemon",job="validators_status"} / (connected{instance="push_daemon",job="validators_status"} + disconnected{instance="push_daemon",job="validators_status"}))'
+              hide: false
+              intervalMs: 1000
+              legendFormat: __auto
+              maxDataPoints: 43200
+              range: true
+              refId: A
+          - refId: B
+            queryType: ''
+            relativeTimeRange:
+              from: 600
+              to: 0
+            datasourceUid: '-100'
+            model:
+              datasource:
+                type: __expr__
+                uid: '-100'
+              expression: A
+              hide: false
+              intervalMs: 1000
+              maxDataPoints: 43200
+              reducer: last
+              refId: B
+              type: reduce
+          - refId: C
+            queryType: ''
+            relativeTimeRange:
+              from: 600
+              to: 0
+            datasourceUid: '-100'
+            model:
+              conditions:
+                - evaluator:
+                    params:
+                      - 0.85
+                    type: lt
+                  operator:
+                    type: and
+                  query:
+                    params:
+                      - C
+                  reducer:
+                    params: []
+                    type: last
+                  type: query
+              datasource:
+                type: __expr__
+                uid: '-100'
+              expression: B
+              hide: false
+              intervalMs: 1000
+              maxDataPoints: 43200
+              refId: C
+              type: threshold
+        for: 1m30s
+        annotations:
+          __dashboardUid__: kBQpRdWnk
+          __panelId__: '37'
+          summary: Less than 85% of validator nodes are connected
+        labels:
+          env: __ENV__
+          severity: critical
+        noDataState: Alerting
+        execErrState: Alerting
+
+      # High: Below 90%
+      - uid: validators-below-90
+        title: Connected Validator Nodes below 90%
+        condition: C
+        data:
+          - refId: A
+            queryType: ''
+            relativeTimeRange:
+              from: 600
+              to: 0
+            datasourceUid: PBFA97CFB590B2093
+            model:
+              editorMode: code
+              expr: 'ping_validator_status{instance="push_daemon",job="validators_status"} * (connected{instance="push_daemon",job="validators_status"} / (connected{instance="push_daemon",job="validators_status"} + disconnected{instance="push_daemon",job="validators_status"}))'
+              hide: false
+              intervalMs: 1000
+              legendFormat: __auto
+              maxDataPoints: 43200
+              range: true
+              refId: A
+          - refId: B
+            queryType: ''
+            relativeTimeRange:
+              from: 600
+              to: 0
+            datasourceUid: '-100'
+            model:
+              datasource:
+                type: __expr__
+                uid: '-100'
+              expression: A
+              hide: false
+              intervalMs: 1000
+              maxDataPoints: 43200
+              reducer: last
+              refId: B
+              type: reduce
+          - refId: C
+            queryType: ''
+            relativeTimeRange:
+              from: 600
+              to: 0
+            datasourceUid: '-100'
+            model:
+              conditions:
+                - evaluator:
+                    params:
+                      - 0.90
+                    type: lt
+                  operator:
+                    type: and
+                  query:
+                    params:
+                      - C
+                  reducer:
+                    params: []
+                    type: last
+                  type: query
+              datasource:
+                type: __expr__
+                uid: '-100'
+              expression: B
+              hide: false
+              intervalMs: 1000
+              maxDataPoints: 43200
+              refId: C
+              type: threshold
+        for: 1m30s
+        annotations:
+          __dashboardUid__: kBQpRdWnk
+          __panelId__: '37'
+          summary: Less than 90% of validator nodes are connected
+        labels:
+          env: __ENV__
+          severity: high
+        noDataState: Alerting
+        execErrState: Alerting
+
+      # Medium: Below 95%
+      - uid: validators-below-95
+        title: Connected Validator Nodes below 95%
+        condition: C
+        data:
+          - refId: A
+            queryType: ''
+            relativeTimeRange:
+              from: 600
+              to: 0
+            datasourceUid: PBFA97CFB590B2093
+            model:
+              editorMode: code
+              expr: 'ping_validator_status{instance="push_daemon",job="validators_status"} * (connected{instance="push_daemon",job="validators_status"} / (connected{instance="push_daemon",job="validators_status"} + disconnected{instance="push_daemon",job="validators_status"}))'
+              hide: false
+              intervalMs: 1000
+              legendFormat: __auto
+              maxDataPoints: 43200
+              range: true
+              refId: A
+          - refId: B
+            queryType: ''
+            relativeTimeRange:
+              from: 600
+              to: 0
+            datasourceUid: '-100'
+            model:
+              datasource:
+                type: __expr__
+                uid: '-100'
+              expression: A
+              hide: false
+              intervalMs: 1000
+              maxDataPoints: 43200
+              reducer: last
+              refId: B
+              type: reduce
+          - refId: C
+            queryType: ''
+            relativeTimeRange:
+              from: 600
+              to: 0
+            datasourceUid: '-100'
+            model:
+              conditions:
+                - evaluator:
+                    params:
+                      - 0.95
+                    type: lt
+                  operator:
+                    type: and
+                  query:
+                    params:
+                      - C
+                  reducer:
+                    params: []
+                    type: last
+                  type: query
+              datasource:
+                type: __expr__
+                uid: '-100'
+              expression: B
+              hide: false
+              intervalMs: 1000
+              maxDataPoints: 43200
+              refId: C
+              type: threshold
+        for: 1m30s
+        annotations:
+          __dashboardUid__: kBQpRdWnk
+          __panelId__: '37'
+          summary: Less than 95% of validator nodes are connected
+        labels:
+          env: __ENV__
+          severity: medium
+        noDataState: NoData
+        execErrState: Alerting
+

@@ -1,13 +1,15 @@
+# Email contact point configuration
+# The __EMAIL__ placeholder will be replaced by the installer script
+
 apiVersion: 1
 
 contactPoints:
   - orgId: 1
     name: email
     receivers:
-      - uid: 2
+      - uid: email-1
         type: email
         settings:
-          addresses: EMAIL_ADDRESS
-#          message: my optional message to include
+          addresses: __EMAIL__
           subject: |
             {{ template "default.title" . }}

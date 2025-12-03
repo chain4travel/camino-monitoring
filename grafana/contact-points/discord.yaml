@@ -1,13 +1,16 @@
+# Discord contact point configuration
+# The __DISCORD_WEBHOOK__ placeholder will be replaced by the installer script
+
 apiVersion: 1
 
 contactPoints:
   - orgId: 1
     name: discord
     receivers:
-      - uid: 1
+      - uid: discord-1
         type: discord
         settings:
-          url: DISCORD_WEBHOOK_URL
-          use_discord_username: Grafana
+          url: __DISCORD_WEBHOOK__
+          use_discord_username: true
           message: |
             {{ template "default.message" . }}

@@ -1,0 +1,12 @@
+# Default notification policy
+
+apiVersion: 1
+
+policies:
+  - orgId: 1
+    receiver: grafana-default-email
+    group_by:
+      - grafana_folder
+      - alertname
+    repeat_interval: 3d
+

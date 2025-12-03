@@ -1,0 +1,20 @@
+# Default contact point configuration (sends to both Discord and Email)
+# The __DISCORD_WEBHOOK__ and __EMAIL__ placeholders will be replaced by the installer script
+
+apiVersion: 1
+
+contactPoints:
+  - orgId: 1
+    name: grafana-default-email
+    receivers:
+      - uid: default-discord
+        type: discord
+        settings:
+          url: __DISCORD_WEBHOOK__
+          use_discord_username: false
+      - uid: default-email
+        type: email
+        settings:
+          addresses: __EMAIL__
+          singleEmail: false
+
