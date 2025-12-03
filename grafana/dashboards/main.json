@@ -3,7 +3,10 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
@@ -21,9 +24,8 @@
   "description": "Home dashboard with the most important indicators for your node and machine",
   "editable": true,
   "fiscalYearStartMonth": 0,
-  "gnetId": null,
   "graphTooltip": 0,
-  "id": 38,
+  "id": 5,
   "links": [
     {
       "icon": "external link",
@@ -47,18 +49,24 @@
             "mode": "thresholds"
           },
           "decimals": 2,
+          "displayName": "${__series.name}",
           "mappings": [],
           "max": 1,
           "min": 0,
+          "noValue": "All validators are healthy",
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "dark-red",
+                "color": "dark-green",
                 "value": null
               },
               {
                 "color": "dark-red",
+                "value": 0
+              },
+              {
+                "color": "semi-dark-red",
                 "value": 0.8
               },
               {
@@ -102,7 +110,7 @@
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "9.2.0",
+      "pluginVersion": "9.3.2",
       "targets": [
         {
           "columns": [
@@ -165,7 +173,10 @@
       "type": "gauge"
     },
     {
-      "datasource": "Prometheus",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
       "description": "Number of accepted and rejected vertices on the X chain in the last minute",
       "fieldConfig": {
         "defaults": {
@@ -173,6 +184,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -240,15 +253,21 @@
             "max"
           ],
           "displayMode": "list",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "8.0.5",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
           "exemplar": true,
           "expr": "avg(round(increase(camino_X_vtx_accepted_count{job=~\"$validator_job_prefix\"}[1m])))>0",
           "interval": "",
@@ -256,6 +275,10 @@
           "refId": "A"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
           "exemplar": true,
           "expr": "avg(round(increase(camino_X_vtx_rejected_count{job=~\"$validator_job_prefix\"}[1m])))>0",
           "hide": false,
@@ -264,6 +287,10 @@
           "refId": "B"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
           "exemplar": true,
           "expr": "bottomk(1, round(increase(camino_X_vtx_accepted_count{job=~\"$validator_job_prefix\"}[1m])))>0",
           "interval": "",
@@ -271,6 +298,10 @@
           "refId": "C"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
           "exemplar": true,
           "expr": "topk(1, round(increase(camino_X_vtx_rejected_count{job=~\"$validator_job_prefix\"}[1m])))>0",
           "hide": false,
@@ -279,13 +310,14 @@
           "refId": "D"
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "X Chain Vertices",
       "type": "timeseries"
     },
     {
-      "datasource": "Prometheus",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
       "description": "Number of accepted and rejected blocks on the P chain in the last minute.",
       "fieldConfig": {
         "defaults": {
@@ -293,6 +325,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -359,15 +393,21 @@
             "max"
           ],
           "displayMode": "list",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "8.0.5",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
           "exemplar": true,
           "expr": "avg(round(increase(camino_P_blks_accepted_count{job=~\"$validator_job_prefix\"}[1m])))>0",
           "interval": "",
@@ -375,6 +415,10 @@
           "refId": "A"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
           "exemplar": true,
           "expr": "avg(round(increase(camino_P_blks_rejected_count{job=~\"$validator_job_prefix\"}[1m])))>0",
           "hide": false,
@@ -383,6 +427,10 @@
           "refId": "B"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
           "exemplar": true,
           "expr": "bottomk(1, round(increase(camino_P_blks_accepted_count{job=~\"$validator_job_prefix\"}[1m])))>0",
           "interval": "",
@@ -390,6 +438,10 @@
           "refId": "C"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
           "exemplar": true,
           "expr": "topk(1,round(increase(camino_P_blks_rejected_count{job=~\"$validator_job_prefix\"}[1m])))>0",
           "hide": false,
@@ -398,13 +450,14 @@
           "refId": "D"
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "P Chain Blocks",
       "type": "timeseries"
     },
     {
-      "datasource": null,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
       "description": "Number of P-Chain blocks this node has proposed on the network in the last day. Since block production on P-Chain is usually below the target rate, every node proposes P blocks.",
       "fieldConfig": {
         "defaults": {
@@ -446,9 +499,13 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "9.3.2",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
           "exemplar": true,
           "expr": "avg(round(increase(camino_P_blks_built{job=~\"$validator_job_prefix\"}[$__range])))",
           "interval": "",
@@ -456,6 +513,10 @@
           "refId": "A"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
           "exemplar": true,
           "expr": "bottomk(1, round(increase(camino_P_blks_built{job=~\"$validator_job_prefix\"}[$__range])))",
           "interval": "",
@@ -467,7 +528,10 @@
       "type": "stat"
     },
     {
-      "datasource": null,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
       "description": "Percentage of CPU used",
       "fieldConfig": {
         "defaults": {
@@ -508,7 +572,7 @@
         "h": 5,
         "w": 3,
         "x": 0,
-        "y": 7
+        "y": 8
       },
       "id": 4,
       "options": {
@@ -524,9 +588,13 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "9.3.2",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
           "expr": "(1 - avg(irate(node_cpu_seconds_total{job=~\"caminogo-machine\", mode=\"idle\"}[1m])) by (instance)) * 100",
           "interval": "",
           "legendFormat": "",
@@ -537,7 +605,10 @@
       "type": "gauge"
     },
     {
-      "datasource": null,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
       "description": "Percentage of storage filled",
       "fieldConfig": {
         "defaults": {
@@ -578,7 +649,7 @@
         "h": 5,
         "w": 3,
         "x": 3,
-        "y": 7
+        "y": 8
       },
       "id": 2,
       "options": {
@@ -594,17 +665,19 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "9.3.2",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
           "expr": "max(((node_filesystem_size_bytes{job=~\"caminogo-machine\", fstype=~\"ext4|vfat\"} - node_filesystem_free_bytes{job=~\"caminogo-machine\", fstype=~\"ext4|vfat\"}) / node_filesystem_size_bytes{job=~\"caminogo-machine\", fstype=~\"ext4|vfat\"}) * 100) by (instance)",
           "interval": "",
           "legendFormat": "",
           "refId": "A"
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Disk Space Used",
       "type": "gauge"
     },
@@ -681,7 +754,7 @@
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "9.2.0",
+      "pluginVersion": "9.3.2",
       "targets": [
         {
           "datasource": {
@@ -700,7 +773,7 @@
           "refId": "A"
         }
       ],
-      "title": "Validators connected",
+      "title": "Validators connected %",
       "transformations": [],
       "type": "gauge"
     },
@@ -709,37 +782,23 @@
         "type": "prometheus",
         "uid": "PBFA97CFB590B2093"
       },
-      "description": "Average time to get a response from a peer",
+      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "mode": "continuous-RdYlGr"
           },
-          "links": [
-            {
-              "title": "Networking Dashboard",
-              "url": "/d/jB1TgdZ7z/network?orgId=1&refresh=10s"
-            }
-          ],
           "mappings": [],
+          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
                 "color": "green",
                 "value": null
-              },
-              {
-                "color": "orange",
-                "value": 500000000
-              },
-              {
-                "color": "dark-red",
-                "value": 1000000000
               }
             ]
-          },
-          "unit": "ms"
+          }
         },
         "overrides": []
       },
@@ -749,23 +808,20 @@
         "x": 9,
         "y": 8
       },
-      "id": 8,
+      "id": 48,
       "options": {
-        "colorMode": "value",
+        "colorMode": "none",
         "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
+          "calcs": [],
           "fields": "",
           "values": false
         },
-        "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "9.1.7",
+      "pluginVersion": "9.3.2",
       "targets": [
         {
           "datasource": {
@@ -773,11 +829,9 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "exemplar": true,
-          "expr": "topk(5,camino_requests_average_latency / 1000000)",
-          "instant": true,
-          "interval": "",
-          "legendFormat": "{{company}}",
+          "expr": "ping_validator_status{instance=\"push_daemon\",job=\"validators_status\"} * connected{instance=\"push_daemon\",job=\"validators_status\"}",
+          "legendFormat": "Connected",
+          "range": true,
           "refId": "A"
         },
         {
@@ -786,15 +840,15 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "exemplar": true,
-          "expr": "avg(camino_requests_average_latency/ 1000000)",
+          "expr": "ping_validator_status{instance=\"push_daemon\",job=\"validators_status\"} * disconnected{instance=\"push_daemon\",job=\"validators_status\"}",
+          "hide": false,
           "interval": "",
-          "legendFormat": "avg request latency of all nodes in #ms",
+          "legendFormat": "Disconnected",
           "range": true,
           "refId": "B"
         }
       ],
-      "title": "Top 5 - highest Network Latency",
+      "title": "Validators connected #",
       "type": "stat"
     },
     {
@@ -802,76 +856,6 @@
         "type": "prometheus",
         "uid": "PBFA97CFB590B2093"
       },
-      "description": "Amount of network stake node is currently connected to",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "max": 1,
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "dark-red",
-                "value": null
-              },
-              {
-                "color": "dark-orange",
-                "value": 0.75
-              },
-              {
-                "color": "dark-green",
-                "value": 0.9
-              }
-            ]
-          },
-          "unit": "percentunit"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 3,
-        "x": 3,
-        "y": 13
-      },
-      "id": 35,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "text": {},
-        "textMode": "value"
-      },
-      "pluginVersion": "9.1.7",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "expr": "max(camino_P_vm_percent_connected{job=~\"$validator_job_prefix\"})",
-          "interval": "",
-          "legendFormat": "",
-          "refId": "A"
-        }
-      ],
-      "title": "Stake connected",
-      "type": "stat"
-    },
-    {
-      "datasource": "Prometheus",
       "description": "Number of accepted and rejected blocks on the C chain in the last minute.",
       "fieldConfig": {
         "defaults": {
@@ -879,6 +863,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -945,22 +931,32 @@
             "max"
           ],
           "displayMode": "list",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "8.0.5",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
           "exemplar": true,
-            "expr": "avg(round(increase(camino_C_blks_accepted_count{job=~\"$validator_job_prefix\"}[1m])))>0",
+          "expr": "avg(round(increase(camino_C_blks_accepted_count{job=~\"$validator_job_prefix\"}[1m])))>0",
           "interval": "",
           "legendFormat": "Avg. Accepted",
           "refId": "Avg. Accepted"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
           "exemplar": true,
           "expr": "avg(round(increase(camino_C_blks_rejected_count{job=~\"$validator_job_prefix\"}[1m])))>0",
           "hide": false,
@@ -969,6 +965,10 @@
           "refId": "Avg. Rejected"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
           "exemplar": true,
           "expr": "bottomk(1, round(increase(camino_C_blks_accepted_count{job=~\"$validator_job_prefix\"}[1m])))>0",
           "interval": "",
@@ -976,6 +976,10 @@
           "refId": "C"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
           "exemplar": true,
           "expr": "topk(1, round(increase(camino_C_blks_rejected_count{job=~\"$validator_job_prefix\"}[1m])))>0",
           "hide": false,
@@ -984,13 +988,14 @@
           "refId": "D"
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "C Chain Blocks",
       "type": "timeseries"
     },
     {
-      "datasource": null,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
       "description": "Number of blocks this node has proposed on the C-Chain in the last day. Since C-Chain blocks are produced at a fast rate, block producers are selected by stake weight.",
       "fieldConfig": {
         "defaults": {
@@ -1036,9 +1041,13 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "9.3.2",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
           "exemplar": true,
           "expr": "avg(round(increase(camino_C_blks_built{job=~\"$validator_job_prefix\"}[$__range])))",
           "interval": "",
@@ -1046,6 +1055,10 @@
           "refId": "A"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
           "exemplar": true,
           "expr": "bottomk(1, round(increase(camino_C_blks_built{job=~\"$validator_job_prefix\"}[$__range])))",
           "interval": "",
@@ -1057,7 +1070,10 @@
       "type": "stat"
     },
     {
-      "datasource": null,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
       "description": "Number of blocks/vertices accepted in the last minute",
       "fieldConfig": {
         "defaults": {
@@ -1082,11 +1098,13 @@
         "h": 7,
         "w": 3,
         "x": 0,
-        "y": 17
+        "y": 13
       },
       "id": 28,
       "options": {
         "displayMode": "gradient",
+        "minVizHeight": 10,
+        "minVizWidth": 0,
         "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
@@ -1098,15 +1116,23 @@
         "showUnfilled": true,
         "text": {}
       },
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "9.3.2",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
           "expr": "avg(round(increase(camino_X_vtx_accepted_count{job=~\"$validator_job_prefix\"}[1m])))",
           "interval": "",
           "legendFormat": "X Chain",
           "refId": "A"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
           "expr": "avg(round(increase(camino_P_blks_accepted_count{job=~\"$validator_job_prefix\"}[1m])))",
           "hide": false,
           "interval": "",
@@ -1114,6 +1140,10 @@
           "refId": "B"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
           "expr": "avg(round(increase(camino_C_blks_accepted_count{job=~\"$validator_job_prefix\"}[1m])))",
           "hide": false,
           "interval": "",
@@ -1123,6 +1153,79 @@
       ],
       "title": "Average accepted Blocks/Vertices",
       "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "description": "Amount of network stake node is currently connected to",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "max": 1,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-red",
+                "value": null
+              },
+              {
+                "color": "dark-orange",
+                "value": 0.75
+              },
+              {
+                "color": "dark-green",
+                "value": 0.9
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 3,
+        "x": 3,
+        "y": 13
+      },
+      "id": 35,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "value"
+      },
+      "pluginVersion": "9.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "expr": "max(camino_P_vm_percent_connected{job=~\"$validator_job_prefix\"})",
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "title": "Stake connected",
+      "type": "stat"
     },
     {
       "datasource": {
@@ -1179,7 +1282,7 @@
         "showUnfilled": true,
         "text": {}
       },
-      "pluginVersion": "9.1.7",
+      "pluginVersion": "9.3.2",
       "targets": [
         {
           "datasource": {
@@ -1187,7 +1290,7 @@
             "uid": "PBFA97CFB590B2093"
           },
           "expr": "camino_X_vtx_processing{job=~\"$validator_job_prefix\"}",
-          "hide": true,
+          "hide": false,
           "interval": "",
           "legendFormat": "X Chain",
           "refId": "A"
@@ -1198,7 +1301,7 @@
             "uid": "PBFA97CFB590B2093"
           },
           "expr": "camino_P_blks_processing{job=~\"$validator_job_prefix\"}",
-          "hide": true,
+          "hide": false,
           "interval": "",
           "legendFormat": "P Chain",
           "refId": "B"
@@ -1212,7 +1315,7 @@
           "expr": "camino_C_blks_processing{job=~\"$validator_job_prefix\"}",
           "hide": false,
           "interval": "",
-          "legendFormat": "{{company}}",
+          "legendFormat": "C Chain",
           "range": true,
           "refId": "C"
         }
@@ -1278,7 +1381,7 @@
         "showUnfilled": true,
         "text": {}
       },
-      "pluginVersion": "9.1.7",
+      "pluginVersion": "9.3.2",
       "targets": [
         {
           "datasource": {
@@ -1323,7 +1426,10 @@
       "type": "bargauge"
     },
     {
-      "datasource": "Prometheus",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
       "description": "How long each database operation is taking on average",
       "fieldConfig": {
         "defaults": {
@@ -1331,6 +1437,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -1388,15 +1496,21 @@
             "max"
           ],
           "displayMode": "table",
-          "placement": "right"
+          "placement": "right",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "8.0.5",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
           "exemplar": true,
           "expr": "avg(increase(camino_db_put_sum{job=~\"$validator_job_prefix\"}[5m])/increase(camino_db_put_count{job=~\"$validator_job_prefix\"}[5m]))",
           "interval": "",
@@ -1404,6 +1518,10 @@
           "refId": "AA"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
           "exemplar": true,
           "expr": "bottomk(5, increase(camino_db_put_sum{job=~\"$validator_job_prefix\"}[5m])/increase(camino_db_put_count{job=~\"$validator_job_prefix\"}[5m]))",
           "interval": "",
@@ -1411,6 +1529,10 @@
           "refId": "AM"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
           "exemplar": true,
           "expr": "avg(increase(camino_db_get_sum{job=~\"$validator_job_prefix\"}[5m])/increase(camino_db_get_count{job=~\"$validator_job_prefix\"}[5m]))",
           "interval": "",
@@ -1418,6 +1540,10 @@
           "refId": "BA"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
           "exemplar": true,
           "expr": "bottomk(5, increase(camino_db_get_sum{job=~\"$validator_job_prefix\"}[5m])/increase(camino_db_get_count{job=~\"$validator_job_prefix\"}[5m]))",
           "interval": "",
@@ -1425,6 +1551,10 @@
           "refId": "BM"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
           "exemplar": true,
           "expr": "avg(increase(camino_db_delete_sum{job=~\"$validator_job_prefix\"}[5m])/increase(camino_db_delete_count{job=~\"$validator_job_prefix\"}[5m]))",
           "interval": "",
@@ -1432,6 +1562,10 @@
           "refId": "CA"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
           "exemplar": true,
           "expr": "bottomk(5, increase(camino_db_delete_sum{job=~\"$validator_job_prefix\"}[5m])/increase(camino_db_delete_count{job=~\"$validator_job_prefix\"}[5m]))",
           "interval": "",
@@ -1439,6 +1573,10 @@
           "refId": "CM"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
           "exemplar": true,
           "expr": "avg(increase(camino_db_has_sum{job=~\"$validator_job_prefix\"}[5m])/increase(camino_db_has_count{job=~\"$validator_job_prefix\"}[5m]))",
           "interval": "",
@@ -1446,6 +1584,10 @@
           "refId": "DA"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
           "exemplar": true,
           "expr": "bottomk(5, increase(camino_db_has_sum{job=~\"$validator_job_prefix\"}[5m])/increase(camino_db_has_count{job=~\"$validator_job_prefix\"}[5m]))",
           "interval": "",
@@ -1453,6 +1595,10 @@
           "refId": "DM"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
           "exemplar": true,
           "expr": "increase(camino_db_compact_size_sum{job=~\"$validator_job_prefix\"}[5m])/increase(camino_db_compact_size_count{job=~\"$validator_job_prefix\"}[5m])",
           "interval": "",
@@ -1460,6 +1606,10 @@
           "refId": "E"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
           "exemplar": true,
           "expr": "increase(camino_db_batch_put_sum{job=~\"$validator_job_prefix\"}[5m])/increase(camino_db_batch_put_count{job=~\"$validator_job_prefix\"}[5m])",
           "interval": "",
@@ -1467,6 +1617,10 @@
           "refId": "F"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
           "exemplar": true,
           "expr": "increase(camino_db_batch_delete_sum{job=~\"$validator_job_prefix\"}[5m])/increase(camino_db_batch_delete_count{job=~\"$validator_job_prefix\"}[5m])",
           "interval": "",
@@ -1474,6 +1628,10 @@
           "refId": "G"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
           "exemplar": true,
           "expr": "increase(camino_db_batch_reset_sum{job=~\"$validator_job_prefix\"}[5m])/increase(camino_db_batch_reset_count{job=~\"$validator_job_prefix\"}[5m])",
           "interval": "",
@@ -1481,6 +1639,10 @@
           "refId": "H"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
           "exemplar": true,
           "expr": "increase(camino_db_batch_replay_sum{job=~\"$validator_job_prefix\"}[5m])/increase(camino_db_batch_replay_count{job=~\"$validator_job_prefix\"}[5m])",
           "interval": "",
@@ -1488,14 +1650,105 @@
           "refId": "I"
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Database Operations Latency (avg / bottom5)",
       "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "description": "Average time to get a response from a peer",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "links": [
+            {
+              "title": "Networking Dashboard",
+              "url": "/d/jB1TgdZ7z/network?orgId=1&refresh=10s"
+            }
+          ],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 500000000
+              },
+              {
+                "color": "dark-red",
+                "value": 1000000000
+              }
+            ]
+          },
+          "unit": "ms"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 3,
+        "x": 0,
+        "y": 20
+      },
+      "id": 8,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "topk(5,camino_requests_average_latency / 1000000)",
+          "instant": true,
+          "interval": "",
+          "legendFormat": "{{company}}",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "avg(camino_requests_average_latency/ 1000000)",
+          "interval": "",
+          "legendFormat": "avg request latency of all nodes in #ms",
+          "range": true,
+          "refId": "B"
+        }
+      ],
+      "title": "Top 5 - highest Network Latency",
+      "type": "stat"
     }
   ],
   "refresh": "10s",
-  "schemaVersion": 32,
+  "schemaVersion": 37,
   "style": "dark",
   "tags": [
     "Camino"
@@ -1505,21 +1758,21 @@
       {
         "current": {
           "selected": false,
-          "text": "validator-node-.*",
-          "value": "validator-node-.*"
+          "text": ".*",
+          "value": ".*"
         },
-        "description": "Job prefix common for all validators nodes |  Example validator-node.*",
+        "description": "Job prefix common for all validators nodes |  Example validator-node.* or .* for all",
         "hide": 0,
         "label": "Validators Job Prefix",
         "name": "validator_job_prefix",
         "options": [
           {
-            "selected": false,
-            "text": "validator-node-.*",
-            "value": "validator-node-.*"
+            "selected": true,
+            "text": ".*",
+            "value": ".*"
           }
         ],
-        "query": "validator-node-.*",
+        "query": ".*",
         "skipUrlSync": false,
         "type": "textbox"
       }
@@ -1533,5 +1786,6 @@
   "timezone": "",
   "title": "Camino Main Dashboard",
   "uid": "kBQpRdWnk",
-  "version": 7
+  "version": 13,
+  "weekStart": ""
 }
