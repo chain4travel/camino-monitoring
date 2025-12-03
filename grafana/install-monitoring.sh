@@ -7,7 +7,9 @@
 #     --discord-webhook "https://discord.com/api/webhooks/..." \
 #     --email "tech@chain4travel.com" \
 #     --api-url "https://columbus.camino.network" \
-#     --internal-api-url "https://internal.columbus.camino.network"
+#     --internal-api-url "https://internal.columbus.camino.network" \
+#     --magellan-url "https://magellan.columbus.camino.network" \
+#     --signavault-url "https://signavault.columbus.camino.network"
 
 set -e
 
@@ -40,6 +42,8 @@ Required Options:
   --email <address>          Email address for alerts
   --api-url <url>            Public API URL (e.g., https://columbus.camino.network)
   --internal-api-url <url>   Internal API URL (e.g., https://internal.columbus.camino.network)
+  --magellan-url <url>       Magellan URL (e.g., https://magellan.columbus.camino.network)
+  --signavault-url <url>     Signavault URL (e.g., https://signavault.columbus.camino.network)
 
 Optional Options:
   --skip-prometheus          Skip Prometheus installation
@@ -57,14 +61,18 @@ Examples:
      --discord-webhook "https://discord.com/api/webhooks/xxx/yyy" \\
      --email "tech@chain4travel.com" \\
      --api-url "https://columbus.camino.network" \\
-     --internal-api-url "https://internal.columbus.camino.network"
+     --internal-api-url "https://internal.columbus.camino.network" \\
+     --magellan-url "https://magellan.columbus.camino.network" \\
+     --signavault-url "https://signavault.columbus.camino.network"
 
   # Full installation for Camino mainnet
   $0 --network camino \\
      --discord-webhook "https://discord.com/api/webhooks/xxx/yyy" \\
      --email "tech@chain4travel.com" \\
      --api-url "https://api.camino.network" \\
-     --internal-api-url "https://internal.api.camino.network"
+     --internal-api-url "https://internal.api.camino.network" \\
+     --magellan-url "https://magellan.camino.network" \\
+     --signavault-url "https://signavault.camino.network"
 EOF
 }
 
@@ -98,6 +106,14 @@ parse_args() {
         ;;
       --internal-api-url)
         INTERNAL_API_URL="$2"
+        shift 2
+        ;;
+      --magellan-url)
+        MAGELLAN_URL="$2"
+        shift 2
+        ;;
+      --signavault-url)
+        SIGNAVAULT_URL="$2"
         shift 2
         ;;
       --skip-prometheus)
@@ -179,6 +195,18 @@ parse_args() {
 
   if [[ -z "$INTERNAL_API_URL" ]]; then
     print_error "Missing required argument: --internal-api-url"
+    usage
+    exit 1
+  fi
+
+  if [[ -z "$MAGELLAN_URL" ]]; then
+    print_error "Missing required argument: --magellan-url"
+    usage
+    exit 1
+  fi
+
+  if [[ -z "$SIGNAVAULT_URL" ]]; then
+    print_error "Missing required argument: --signavault-url"
     usage
     exit 1
   fi
@@ -616,8 +644,8 @@ Type=simple
 User=prometheus
 Group=prometheus
 ExecReload=/bin/kill -HUP \$MAINPID
-ExecStart=/usr/local/bin/push_health_status.sh ${PUSH_GATEWAY_URL_PORT} ${API_URL} ${INTERNAL_API_URL}
-ExecStop=/usr/local/bin/push_health_status.sh ${PUSH_GATEWAY_URL_PORT} ${API_URL} cleanup
+ExecStart=/usr/local/bin/push_health_status.sh ${PUSH_GATEWAY_URL_PORT} ${API_URL} ${INTERNAL_API_URL} ${MAGELLAN_URL} ${SIGNAVAULT_URL}
+ExecStop=/usr/local/bin/push_health_status.sh ${PUSH_GATEWAY_URL_PORT} ${API_URL} ${INTERNAL_API_URL} ${MAGELLAN_URL} ${SIGNAVAULT_URL} cleanup
 Restart=always
 RestartSec=10
 
@@ -656,6 +684,8 @@ print_summary() {
   echo "Network:       ${NETWORK} (${ENV_LABEL})"
   echo "API URL:       ${API_URL}"
   echo "Internal API:  ${INTERNAL_API_URL}"
+  echo "Magellan URL:  ${MAGELLAN_URL}"
+  echo "Signavault:    ${SIGNAVAULT_URL}"
   echo ""
   echo "Services:"
   echo "  - Prometheus:   http://localhost:9090"

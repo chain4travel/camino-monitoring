@@ -1,46 +1,37 @@
 #!/bin/bash
 # Push health status metrics to Prometheus Pushgateway
-# Usage: push_health_status.sh <pushgateway_url:port> <api_url> <internal_api_url> [cleanup]
+# Usage: push_health_status.sh <pushgateway_url:port> <api_url> <internal_api_url> <magellan_url> <signavault_url> [cleanup]
 
 SCRAPING_INTERVAL=15
 PUSH_GATEWAY_URL_PORT=${1}
-API_URL=${2}
+PUBLIC_API_URL=${2}
 INTERNAL_API_URL=${3}
+MAGELLAN_URL=${4}
+SIGNAVAULT_URL=${5}
 
-# Derive URLs from API_URL
-derive_urls() {
-  # Determine network from API response
-  response=$(curl -s -w "%{http_code}" -X POST -H "Content-type: application/json" "$API_URL/ext/info" -d '{"jsonrpc": "2.0","method": "info.getNetworkName","id": 1}')
-  status_code=$(tail -n1 <<<"$response")
-  
-  if [[ "$status_code" -ne 200 ]]; then
-    return 1
+# Validate required parameters
+validate_params() {
+  if [[ -z "$PUSH_GATEWAY_URL_PORT" || -z "$PUBLIC_API_URL" || -z "$INTERNAL_API_URL" || -z "$MAGELLAN_URL" || -z "$SIGNAVAULT_URL" ]]; then
+    echo 'Usage: push_health_status.sh <pushgateway_url:port> <api_url> <internal_api_url> <magellan_url> <signavault_url> [cleanup]'
+    echo ''
+    echo 'Parameters:'
+    echo '  pushgateway_url:port  - Pushgateway endpoint (e.g., localhost:9091)'
+    echo '  api_url               - Public API URL (e.g., https://columbus.camino.network)'
+    echo '  internal_api_url      - Internal API URL (e.g., https://internal.columbus.camino.network)'
+    echo '  magellan_url          - Magellan URL (e.g., https://magellan.columbus.camino.network)'
+    echo '  signavault_url        - Signavault URL (e.g., https://signavault.columbus.camino.network)'
+    echo ''
+    echo 'Examples:'
+    echo '  # Columbus (testnet)'
+    echo '  push_health_status.sh localhost:9091 https://columbus.camino.network https://internal.columbus.camino.network https://magellan.columbus.camino.network https://signavault.columbus.camino.network'
+    echo ''
+    echo '  # Camino (mainnet)'
+    echo '  push_health_status.sh localhost:9091 https://api.camino.network https://internal.api.camino.network https://magellan.camino.network https://signavault.camino.network'
+    exit 1
   fi
-  
-  network_name=$(echo "$response" | sed 's/...$//' | jq -r .result.networkName)
-  
-  if [[ $network_name == "camino" ]]; then
-    public_api_url="${API_URL:-https://api.camino.network}"
-    internal_api_url="${INTERNAL_API_URL:-https://internal.api.camino.network}"
-    magellan_url="https://magellan.camino.network"
-    signavault_url="https://signavault.camino.network/v1/deposit-offer/QBjybaWQ9FdyQ4gc1cNts3dgmPN8ga32r?signature=765e1324d476f83c0887d8144579c734651800006b55c85d191e890e78168f1c417da2fd03d71af2cf52d9cb16c5554b90a08185dc268c6eb917c3e47085f00801&timestamp=1715169776&multisig=false"
-  elif [[ $network_name == "columbus" ]]; then
-    public_api_url="${API_URL:-https://columbus.camino.network}"
-    internal_api_url="${INTERNAL_API_URL:-https://internal.columbus.camino.network}"
-    magellan_url="https://magellan.columbus.camino.network"
-    signavault_url="https://signavault.columbus.camino.network/v1/deposit-offer/QBjybaWQ9FdyQ4gc1cNts3dgmPN8ga32r?signature=765e1324d476f83c0887d8144579c734651800006b55c85d191e890e78168f1c417da2fd03d71af2cf52d9cb16c5554b90a08185dc268c6eb917c3e47085f00801&timestamp=1715169776&multisig=false"
-  else
-    return 1
-  fi
-  
-  return 0
 }
 
 query_health_status() {
-  if ! derive_urls; then
-    return 1
-  fi
-  
   extract_metric_public_api_healthy
   extract_metric_internal_api_healthy
   extract_metric_magellan_healthy
@@ -55,7 +46,7 @@ query_health_status() {
 }
 
 extract_metric_public_api_healthy() {
-  public_api_response=$(curl -s -w "%{http_code}" -X POST -H "Content-type: application/json" "$public_api_url/ext/health" -d '{"jsonrpc": "2.0","method": "health.health","params": {},"id": 1}')
+  public_api_response=$(curl -s -w "%{http_code}" -X POST -H "Content-type: application/json" "$PUBLIC_API_URL/ext/health" -d '{"jsonrpc": "2.0","method": "health.health","params": {},"id": 1}')
   public_api_status_code=$(tail -n1 <<<"$public_api_response")
 
   if [[ "$public_api_status_code" -ne 200 ]]; then
@@ -72,7 +63,7 @@ extract_metric_public_api_healthy() {
 }
 
 extract_metric_internal_api_healthy() {
-  internal_api_response=$(curl -s -w "%{http_code}" -X POST -H "Content-type: application/json" "$internal_api_url/ext/health" -d '{"jsonrpc": "2.0","method": "health.health","params": {},"id": 1}')
+  internal_api_response=$(curl -s -w "%{http_code}" -X POST -H "Content-type: application/json" "$INTERNAL_API_URL/ext/health" -d '{"jsonrpc": "2.0","method": "health.health","params": {},"id": 1}')
   internal_api_status_code=$(tail -n1 <<<"$internal_api_response")
 
   if [[ "$internal_api_status_code" -ne 200 ]]; then
@@ -89,7 +80,7 @@ extract_metric_internal_api_healthy() {
 }
 
 extract_metric_magellan_healthy() {
-  magellan_response=$(curl -s -w "%{http_code}" "$magellan_url/v2")
+  magellan_response=$(curl -s -w "%{http_code}" "$MAGELLAN_URL/v2")
   magellan_status_code=$(tail -c 4 <<<"$magellan_response")
 
   if [[ "$magellan_status_code" -ne 200 ]]; then
@@ -100,7 +91,9 @@ extract_metric_magellan_healthy() {
 }
 
 extract_metric_signavault_healthy() {
-  signavault_response=$(curl -s -w "%{http_code}" "$signavault_url")
+  # Signavault health check URL with test parameters
+  signavault_check_url="${SIGNAVAULT_URL}/v1/deposit-offer/QBjybaWQ9FdyQ4gc1cNts3dgmPN8ga32r?signature=765e1324d476f83c0887d8144579c734651800006b55c85d191e890e78168f1c417da2fd03d71af2cf52d9cb16c5554b90a08185dc268c6eb917c3e47085f00801&timestamp=1715169776&multisig=false"
+  signavault_response=$(curl -s -w "%{http_code}" "$signavault_check_url")
   signavault_status_code=$(tail -c 4 <<<"$signavault_response")
 
   if [[ "$signavault_status_code" -ne 200 ]]; then
@@ -114,18 +107,11 @@ cleanup() {
   echo "ping_health_status 0" | curl --data-binary @- "${PUSH_GATEWAY_URL_PORT}/metrics/job/health_status/instance/push_daemon"
 }
 
-# Check arguments
-if [[ $# -lt 3 ]]; then
-  echo 'Usage: push_health_status.sh <pushgateway_url:port> <api_url> <internal_api_url> [cleanup]'
-  echo ''
-  echo 'Examples:'
-  echo '  push_health_status.sh localhost:9091 https://columbus.camino.network https://internal.columbus.camino.network'
-  echo '  push_health_status.sh localhost:9091 https://api.camino.network https://internal.api.camino.network'
-  exit 1
-fi
+# Validate parameters
+validate_params
 
 # Handle cleanup
-if [[ $# -eq 4 ]] && [ "$4" = "cleanup" ]; then
+if [[ $# -eq 6 ]] && [ "$6" = "cleanup" ]; then
   echo 'Cleaning up...'
   cleanup
   exit 0
