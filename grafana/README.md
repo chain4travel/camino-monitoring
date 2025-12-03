@@ -13,7 +13,9 @@ Use the `install-monitoring.sh` script for a complete automated installation:
   --discord-webhook "https://discord.com/api/webhooks/xxx/yyy" \
   --email "tech@chain4travel.com" \
   --api-url "https://columbus.camino.network" \
-  --internal-api-url "https://internal.columbus.camino.network"
+  --internal-api-url "https://internal.columbus.camino.network" \
+  --magellan-url "https://magellan.columbus.camino.network" \
+  --signavault-url "https://signavault.columbus.camino.network"
 
 # For Camino (mainnet)
 ./install-monitoring.sh \
@@ -21,7 +23,9 @@ Use the `install-monitoring.sh` script for a complete automated installation:
   --discord-webhook "https://discord.com/api/webhooks/xxx/yyy" \
   --email "tech@chain4travel.com" \
   --api-url "https://api.camino.network" \
-  --internal-api-url "https://internal.api.camino.network"
+  --internal-api-url "https://internal.api.camino.network" \
+  --magellan-url "https://magellan.camino.network" \
+  --signavault-url "https://signavault.camino.network"
 ```
 
 ### Required Parameters
@@ -33,6 +37,8 @@ Use the `install-monitoring.sh` script for a complete automated installation:
 | `--email` | Email address for alerts | `tech@chain4travel.com` |
 | `--api-url` | Public API URL | `https://columbus.camino.network` |
 | `--internal-api-url` | Internal API URL | `https://internal.columbus.camino.network` |
+| `--magellan-url` | Magellan explorer URL | `https://magellan.columbus.camino.network` |
+| `--signavault-url` | Signavault service URL | `https://signavault.columbus.camino.network` |
 
 ### Optional Parameters
 

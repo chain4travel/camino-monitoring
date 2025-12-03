@@ -427,12 +427,17 @@ EOF
   sudo systemctl enable node_exporter
 
   # Update prometheus.yml with scrape configs
+  # Extract hostname from API_URL for caminogo job
+  API_HOST=$(echo "${API_URL}" | sed -e 's|^https\?://||' -e 's|/.*$||')
+  INTERNAL_API_HOST=$(echo "${INTERNAL_API_URL}" | sed -e 's|^https\?://||' -e 's|/.*$||')
+  
   cat << EOF | sudo tee -a /etc/prometheus/prometheus.yml > /dev/null
 
   - job_name: 'caminogo'
     metrics_path: '/ext/metrics'
+    scheme: https
     static_configs:
-      - targets: ['localhost:9650']
+      - targets: ['${INTERNAL_API_HOST}']
 
   - job_name: 'caminogo-machine'
     static_configs:
