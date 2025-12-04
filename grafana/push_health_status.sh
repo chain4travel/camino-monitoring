@@ -46,16 +46,10 @@ query_health_status() {
 }
 
 extract_metric_public_api_healthy() {
-  public_api_response=$(curl -s -w "%{http_code}" -X POST -H "Content-type: application/json" "$PUBLIC_API_URL/ext/health" -d '{"jsonrpc": "2.0","method": "health.health","params": {},"id": 1}')
-  public_api_status_code=$(tail -n1 <<<"$public_api_response")
-
-  if [[ "$public_api_status_code" -ne 200 ]]; then
-    metric_public_api_healthy="public_api_health_status 0"
-    return 1
-  fi
+  public_api_response=$(curl -s -X POST -H "Content-type: application/json" "$PUBLIC_API_URL/ext/health" -d '{"jsonrpc": "2.0","method": "health.health","params": {},"id": 1}')
+  public_api_healthy=$(echo "$public_api_response" | jq -r '.result.healthy // false' 2>/dev/null || echo "false")
   
-  public_api_healthy=$(echo "$public_api_response" | sed 's/...$//' | jq .result.healthy)
-  if [[ $public_api_healthy == "true" ]]; then
+  if [[ "$public_api_healthy" == "true" ]]; then
     metric_public_api_healthy="public_api_health_status 1"
   else
     metric_public_api_healthy="public_api_health_status 0"
@@ -63,16 +57,10 @@ extract_metric_public_api_healthy() {
 }
 
 extract_metric_internal_api_healthy() {
-  internal_api_response=$(curl -s -w "%{http_code}" -X POST -H "Content-type: application/json" "$INTERNAL_API_URL/ext/health" -d '{"jsonrpc": "2.0","method": "health.health","params": {},"id": 1}')
-  internal_api_status_code=$(tail -n1 <<<"$internal_api_response")
-
-  if [[ "$internal_api_status_code" -ne 200 ]]; then
-    metric_internal_api_healthy="internal_api_health_status 0"
-    return 1
-  fi
+  internal_api_response=$(curl -s -X POST -H "Content-type: application/json" "$INTERNAL_API_URL/ext/health" -d '{"jsonrpc": "2.0","method": "health.health","params": {},"id": 1}')
+  internal_api_healthy=$(echo "$internal_api_response" | jq -r '.result.healthy // false' 2>/dev/null || echo "false")
   
-  internal_api_healthy=$(echo "$internal_api_response" | sed 's/...$//' | jq .result.healthy)
-  if [[ $internal_api_healthy == "true" ]]; then
+  if [[ "$internal_api_healthy" == "true" ]]; then
     metric_internal_api_healthy="internal_api_health_status 1"
   else
     metric_internal_api_healthy="internal_api_health_status 0"
